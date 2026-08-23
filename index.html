@@ -235,6 +235,18 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .chip:hover{border-color:var(--color-accent);color:var(--color-text);}
 .chip.active{background:var(--color-brand);border-color:var(--color-brand);color:#fff;}
 
+/* ============ CAROUSEL ============ */
+.carousel-wrap{position:relative;}
+.carousel-track{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x proximity;padding:4px 4px 16px;margin:-4px -4px -16px;scrollbar-width:thin;scrollbar-color:var(--color-border) transparent;}
+.carousel-track::-webkit-scrollbar{height:6px;}
+.carousel-track::-webkit-scrollbar-track{background:transparent;}
+.carousel-track::-webkit-scrollbar-thumb{background:var(--color-border);border-radius:999px;}
+.carousel-track .card{flex:0 0 240px;scroll-snap-align:start;}
+.carousel-next{position:absolute;top:calc(50% - 8px);right:-8px;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--color-surface);box-shadow:var(--shadow-lg);border:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;color:var(--color-text);z-index:2;transition:background-color .15s ease;}
+.carousel-next:hover{background:var(--color-surface-2);}
+.carousel-next .icon{width:18px;height:18px;}
+@media (max-width:640px){.carousel-next{display:none;}}
+
 /* ============ PRODUCT GRID / CARD ============ */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
 .card{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s ease;}
@@ -261,6 +273,8 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .card-price .box-price{color:var(--color-text);}}
 .card-price .unit-price{display:block;font-size:.72rem;color:var(--color-text-muted);font-weight:600;}
 .add-btn{width:44px;height:44px;border-radius:50%;background:var(--color-brand);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background-color .15s ease;}
+:root[data-theme="dark"] .add-btn{background:var(--color-brand-2);}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .add-btn{background:var(--color-brand-2);}}
 .add-btn:hover{background:var(--color-accent);color:var(--color-accent-ink);transform:scale(1.08) rotate(90deg);}
 .add-btn:active{transform:scale(.92) rotate(90deg);}
 .add-btn .icon{width:18px;height:18px;}
@@ -278,11 +292,10 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .arch-divider{height:34px;background-repeat:repeat-x;background-position:top center;background-size:64px 34px;}
 
 /* ============ PROMO STRIP ============ */
-.promo-band{background:linear-gradient(120deg,color-mix(in srgb, var(--color-accent) 10%, var(--color-surface)),var(--color-surface));border:1.5px solid var(--color-border);border-left:5px solid var(--color-accent);color:var(--color-text);border-radius:var(--radius-lg);padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.promo-band{background:var(--color-accent);color:var(--color-accent-ink);border-radius:var(--radius-lg);padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.promo-band .eyebrow{color:var(--color-brand);}
 .promo-band h3{font-size:1.4rem;max-width:32ch;color:var(--color-brand);}
-:root[data-theme="dark"] .promo-band h3{color:var(--color-text);}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .promo-band h3{color:var(--color-text);}}
-.promo-band p{color:var(--color-text-muted);margin-top:6px;max-width:48ch;}
+.promo-band p{color:var(--color-accent-ink);opacity:.85;margin-top:6px;max-width:48ch;}
 
 /* ============ FOOTER ============ */
 .site-footer{background:var(--color-brand);color:rgba(255,255,255,.85);margin-top:40px;}
@@ -904,13 +917,16 @@ function viewHome(){
       '<div><h2>Ofertas y más vendidos</h2><p>Las cajas favoritas de nuestros clientes esta semana.</p></div>'+
       '<a href="#/catalogo/carnicos" class="see-all">Ver todo <svg class="icon"><use href="#i-chevron-r"/></svg></a>'+
     '</div>'+
-    '<div class="grid">'+featured.map(productCard).join('')+'</div>'+
+    '<div class="carousel-wrap">'+
+      '<div class="carousel-track" id="featuredCarousel">'+featured.map(productCard).join('')+'</div>'+
+      '<button class="carousel-next" id="featuredCarouselNext" aria-label="Ver más productos"><svg class="icon"><use href="#i-chevron-r"/></svg></button>'+
+    '</div>'+
   '</section>'+
 
   '<section class="wrap" style="padding-bottom:60px;">'+
     '<div class="promo-band">'+
-      '<div><span class="eyebrow" style="color:var(--color-accent-2)">Entrega a domicilio</span><h3 class="font-display">Rápido, seguro y confiable</h3><p>Escríbenos por WhatsApp al (786) 901-9115 y te ayudamos a armar tu pedido.</p></div>'+
-      '<a href="#/catalogo/carnicos" class="btn btn-primary">Empezar a comprar</a>'+
+      '<div><span class="eyebrow">Entrega a domicilio</span><h3 class="font-display">Rápido, seguro y confiable</h3><p>Escríbenos por WhatsApp al (786) 901-9115 y te ayudamos a armar tu pedido.</p></div>'+
+      '<a href="#/catalogo/carnicos" class="btn btn-dark">Empezar a comprar</a>'+
     '</div>'+
   '</section>';
 }
@@ -1184,6 +1200,17 @@ function bindPageEvents(route){
       setTimeout(function(){btn.classList.remove('bump');},350);
     });
   });
+
+  if(route.name==='home'){
+    var carousel = document.getElementById('featuredCarousel');
+    var carouselNext = document.getElementById('featuredCarouselNext');
+    if(carousel && carouselNext){
+      carouselNext.addEventListener('click', function(){
+        var cardWidth = carousel.querySelector('.card') ? carousel.querySelector('.card').offsetWidth : 240;
+        carousel.scrollBy({left: cardWidth * 2 + 40, behavior:'smooth'});
+      });
+    }
+  }
 
   if(route.name==='product'){
     var p = PROD_MAP[route.id];
