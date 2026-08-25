@@ -11,19 +11,19 @@
 <style>
 /* ============ TOKENS ============ */
 :root{
-  --color-bg:#F4F7FA;
+  --color-bg:#F8FAFC;
   --color-surface:#FFFFFF;
-  --color-surface-2:#EAF0F6;
-  --color-surface-3:#DCE7F0;
-  --color-border:#D8E1EA;
-  --color-text:#142438;
-  --color-text-muted:#52667C;
-  --color-brand:#14314F;
-  --color-brand-2:#1E4570;
+  --color-surface-2:#EFF6FB;
+  --color-surface-3:#E0EFFA;
+  --color-border:#D4E6F5;
+  --color-text:#0F2A47;
+  --color-text-muted:#4A6B8A;
+  --color-brand:#0066CC;
+  --color-brand-2:#0052A3;
   --color-brand-contrast:#FFFFFF;
-  --color-accent:#D98E2B;
-  --color-accent-2:#C97A17;
-  --color-accent-ink:#3D2703;
+  --color-accent:#0066CC;
+  --color-accent-2:#0052A3;
+  --color-accent-ink:#002B66;
   --color-danger:#C23B3B;
   --color-success:#2F9E6E;
   --color-success-ink:#0E3524;
@@ -520,17 +520,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 <symbol id="cat-aceite" viewBox="0 0 48 48"><rect x="18" y="6" width="8" height="6" rx="1.5"/><path d="M17 12h10l3 7c1.5 3 1.5 5 1.5 8v10a3 3 0 0 1-3 3H15.5a3 3 0 0 1-3-3V27c0-3 0-5 1.5-8z"/><path d="M13.5 26h17" /></symbol>
 <symbol id="cat-dulces" viewBox="0 0 48 48"><path d="M17 19l-8-4v18l8-4z"/><path d="M31 19l8-4v18l-8-4z"/><rect x="17" y="17" width="14" height="14" rx="6"/></symbol>
 <symbol id="cat-galletas" viewBox="0 0 48 48"><ellipse cx="24" cy="32" rx="13" ry="4.2"/><ellipse cx="24" cy="26" rx="13" ry="4.2"/><ellipse cx="24" cy="20" rx="13" ry="4.2"/><circle cx="19" cy="20" r="1.3" fill="currentColor" stroke="none"/><circle cx="28" cy="19.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="24" cy="26" r="1.3" fill="currentColor" stroke="none"/></symbol>
-<!-- logo -->
-<symbol id="santile-mark" viewBox="0 0 64 64">
-  <path d="M25 16c0-4 3.2-7 7-7s7 3 7 7v3H25z"/>
-  <rect x="27" y="19" width="10" height="14"/>
-  <circle cx="32" cy="24.5" r="2.6"/>
-  <path d="M12 40c1-7 8-12 20-12s19 5 20 12" />
-  <path d="M8 46c0-4.5 4-8 8-8s8 3.5 8 8" />
-  <path d="M24 46c0-5 4-9 8-9s8 4 8 9" />
-  <path d="M40 46c0-4.5 4-8 8-8s8 3.5 8 8" />
-  <line x1="6" y1="46" x2="58" y2="46"/>
-</symbol>
+<!-- logo - using client's image -->
 </defs>
 </svg>
 
@@ -539,7 +529,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
     <div class="header-inner">
       <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Abrir menú"><svg class="icon"><use href="#i-menu"/></svg></button>
       <a href="#/" class="brand">
-        <svg class="icon logo-mark" viewBox="0 0 64 64"><use href="#santile-mark"/></svg>
+        <img src="docs/assets/logo-iglesia-azul.jpg" alt="Santilé" class="logo-mark" style="width:48px;height:48px;object-fit:contain;">
         <span class="brand-text"><span class="name">Santilé</span><span class="tagline">Donde compra el espirituano</span></span>
       </a>
       <nav class="main-nav" id="mainNav">
@@ -591,7 +581,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <svg class="icon logo-mark" viewBox="0 0 64 64"><use href="#santile-mark"/></svg>
+        <img src="docs/assets/logo-iglesia-azul.jpg" alt="Santilé" style="width:48px;height:48px;object-fit:contain;">
         <p>Cajas de cárnicos, alimentos, aceite, dulces y galletas importadas, con entrega a domicilio para el espirituano.</p>
       </div>
       <div class="footer-col">
@@ -888,26 +878,8 @@ function catRailHtml(){
 function viewHome(){
   var featured = PRODUCTS.filter(function(p){return p.badge;}).slice(0,8);
   return ''+
-  '<section class="hero">'+
-    '<div class="hero-inner">'+
-      '<div class="hero-copy">'+
-        '<span class="eyebrow">Cajas al mejor precio</span>'+
-        '<h1>Lo que se come en <em>Sancti Spíritus</em>,<br>entregado en tu puerta.</h1>'+
-        '<p>Cárnicos, alimentos, aceite y condimentos, dulces y galletas — en cajas listas para tu casa o tu negocio, con calidad premium importada.</p>'+
-        '<div class="hero-actions">'+
-          '<a href="#/catalogo/carnicos" class="btn btn-primary">Ver catálogo <svg class="icon"><use href="#i-chevron-r"/></svg></a>'+
-          '<a href="#/cuenta" class="btn btn-ghost">Mi cuenta</a>'+
-        '</div>'+
-      '</div>'+
-      '<div class="hero-art">'+
-        '<div class="hero-badge-ring"><svg class="icon logo-mark" viewBox="0 0 64 64"><use href="#santile-mark"/></svg>'+
-          '<div class="hero-stats"><div><b>+20</b>productos</div><div><b>5</b>categorías</div><div><b>24h</b>respuesta</div></div>'+
-        '</div>'+
-      '</div>'+
-    '</div>'+
-  '</section>'+
 
-  '<section class="section wrap">'+
+  '<section class="section wrap" style="padding-top:32px;">'+
     '<div class="section-head"><div><h2>Compra por categoría</h2><p>Elige la categoría y arma tu caja ideal.</p></div></div>'+
     '<div class="cat-rail">'+catRailHtml()+'</div>'+
   '</section>'+
