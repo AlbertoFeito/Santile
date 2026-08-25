@@ -127,27 +127,27 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   box-shadow:var(--shadow-sm);
   border-bottom:1px solid var(--color-border);
 }
-.header-inner{display:flex;align-items:center;gap:12px;padding:14px 20px;max-width:1240px;margin:0 auto;}
+.header-inner{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 20px;max-width:1240px;margin:0 auto;}
+@media (max-width:760px){
+  .search-bar{order:10;flex-basis:100%;}
+  .brand .logo-mark{width:44px;height:44px;}
+  .brand-text .tagline{display:none;}
+}
 .brand{display:flex;align-items:center;gap:10px;min-width:0;}
 .brand .logo-mark{width:75px;height:75px;flex-shrink:0;border-radius:0;overflow:hidden;display:block;}
 .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
 .brand-text .name{font-family:var(--font-display);font-size:1.35rem;font-weight:700;letter-spacing:.01em;white-space:nowrap;color:var(--color-brand);}
 .brand-text .tagline{font-size:.66rem;letter-spacing:.03em;color:var(--color-text-muted);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.main-nav{display:flex;align-items:center;gap:4px;margin-left:8px;}
-.main-nav a{padding:8px 12px;border-radius:999px;font-size:.9rem;font-weight:600;color:var(--color-brand);transition:background-color .15s ease,color .15s ease;white-space:nowrap;}
-.main-nav a:hover{background:var(--color-surface-2);color:var(--color-brand-2);}
-.main-nav a.active{background:var(--color-surface-2);color:var(--color-brand-2);}
-.header-spacer{flex:1;}
 .header-actions{display:flex;align-items:center;gap:6px;}
 .icon-btn{position:relative;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:999px;color:var(--color-brand);transition:background-color .15s ease;}
 .icon-btn:hover{background:var(--color-surface-2);}
 .icon-btn .icon{width:21px;height:21px;}
 .cart-count{position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--color-danger);color:#fff;font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;}
-.menu-toggle{display:none;}
-@media (max-width:900px){
-  .main-nav{display:none;}
-  .menu-toggle{display:flex;}
-}
+.menu-toggle{display:flex;}
+.search-bar{flex:1;display:flex;align-items:center;gap:10px;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:999px;padding:0 16px;height:42px;min-width:0;}
+.search-bar .icon{width:18px;height:18px;color:var(--color-text-muted);flex-shrink:0;}
+.search-input{flex:1;min-width:0;border:none;background:transparent;outline:none;font:inherit;font-size:.9rem;color:var(--color-text);}
+.search-input::placeholder{color:var(--color-text-muted);}
 
 /* mobile drawer nav */
 .mobile-nav{position:fixed;inset:0;z-index:60;visibility:hidden;}
@@ -501,6 +501,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.2" fill="currentColor" stroke="none"/><path d="M2.5 3h2.4l2.4 13.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21.5 8H6"/></symbol>
 <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.2c1.3-3.6 4.2-5.6 7.5-5.6s6.2 2 7.5 5.6"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.3" y2="15.3"/></symbol>
 <symbol id="i-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
 <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
 <symbol id="i-chevron-l" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
@@ -534,15 +535,10 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
         <img src="docs/assets/logo-iglesia-azul.png" alt="Santilé" class="logo-mark" style="object-fit:contain;">
         <span class="brand-text"><span class="name">Santilé</span><span class="tagline">Donde compra el espirituano</span></span>
       </a>
-      <nav class="main-nav" id="mainNav">
-        <a href="#/" data-route="/">Inicio</a>
-        <a href="#/catalogo/carnicos" data-route="/catalogo/carnicos">Cárnicos</a>
-        <a href="#/catalogo/alimentos" data-route="/catalogo/alimentos">Alimentos</a>
-        <a href="#/catalogo/aceite" data-route="/catalogo/aceite">Aceite y Condimentos</a>
-        <a href="#/catalogo/dulces" data-route="/catalogo/dulces">Dulces</a>
-        <a href="#/catalogo/galletas" data-route="/catalogo/galletas">Galletas</a>
-      </nav>
-      <div class="header-spacer"></div>
+      <div class="search-bar">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos...">
+      </div>
       <div class="header-actions">
         <a href="#/cuenta" class="icon-btn" aria-label="Mi cuenta"><svg class="icon"><use href="#i-user"/></svg></a>
         <button class="icon-btn" id="cartToggle" aria-label="Carrito de compra">
@@ -823,9 +819,6 @@ function render(route){
   lastRoute = route;
   var app = document.getElementById('app');
   window.scrollTo({top:0,behavior:'instant' in window ? 'instant':'auto'});
-  document.querySelectorAll('.main-nav a').forEach(function(a){
-    a.classList.toggle('active', a.dataset.route === '/'+ (route.name==='catalog'&&route.cat? 'catalogo/'+route.cat : ''));
-  });
   if(route.name==='home') app.innerHTML = viewHome();
   else if(route.name==='catalog') app.innerHTML = viewCatalog(route.cat);
   else if(route.name==='product') app.innerHTML = viewProduct(route.id);
