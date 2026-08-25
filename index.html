@@ -129,7 +129,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 }
 .header-inner{display:flex;align-items:center;gap:12px;padding:14px 20px;max-width:1240px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:10px;min-width:0;}
-.brand .logo-mark{width:75px;height:75px;color:#fff;flex-shrink:0;border-radius:12px;}
+.brand .logo-mark{width:75px;height:75px;flex-shrink:0;border-radius:50%;overflow:hidden;display:block;}
 .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
 .brand-text .name{font-family:var(--font-display);font-size:1.35rem;font-weight:700;letter-spacing:.01em;white-space:nowrap;color:var(--color-brand);}
 .brand-text .tagline{font-size:.66rem;letter-spacing:.03em;color:var(--color-text-muted);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -531,7 +531,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
     <div class="header-inner">
       <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Abrir menú"><svg class="icon"><use href="#i-menu"/></svg></button>
       <a href="#/" class="brand">
-        <img src="docs/assets/logo-iglesia-azul.jpg" alt="Santilé" class="logo-mark" style="width:64px;height:64px;object-fit:contain;">
+        <img src="docs/assets/logo-iglesia-azul.jpg" alt="Santilé" class="logo-mark" style="object-fit:cover;">
         <span class="brand-text"><span class="name">Santilé</span><span class="tagline">Donde compra el espirituano</span></span>
       </a>
       <nav class="main-nav" id="mainNav">
