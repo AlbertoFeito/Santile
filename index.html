@@ -182,13 +182,41 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .mobile-nav.open{visibility:visible;}
 .mobile-nav .scrim{position:absolute;inset:0;background:rgba(10,20,32,.5);opacity:0;transition:opacity .25s ease;}
 .mobile-nav.open .scrim{opacity:1;}
-.mobile-nav .panel{position:absolute;top:0;left:0;bottom:0;width:78%;max-width:320px;background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-lg);transform:translateX(-100%);transition:transform .3s cubic-bezier(.32,.72,0,1);padding:20px;overflow-y:auto;}
+.mobile-nav .panel{position:absolute;top:0;left:0;bottom:0;width:86%;max-width:340px;display:flex;flex-direction:column;background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-lg);transform:translateX(-100%);transition:transform .34s cubic-bezier(.32,.72,0,1);}
 .mobile-nav.open .panel{transform:translateX(0);}
-.mobile-nav .panel a,.mobile-nav .panel .nav-row{display:block;padding:12px 8px;font-weight:700;font-size:1.05rem;border-bottom:1px solid var(--color-border);}
-.mobile-nav .panel .nav-row{width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.mobile-nav .panel .nav-row .icon{width:16px;height:16px;color:var(--color-text-muted);}
-.mobile-nav-back{width:32px;height:32px;margin-left:-6px;flex-shrink:0;}
-.mobile-nav-back .icon{width:20px;height:20px;}
+.mnav-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;padding:max(16px,env(safe-area-inset-top)) 16px 14px;border-bottom:1px solid var(--color-border);}
+.mnav-title{font-family:var(--font-display);font-size:1.12rem;font-weight:700;letter-spacing:-.01em;min-width:0;}
+.mnav-close{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:999px;color:var(--color-text);transition:background-color .15s ease;}
+.mnav-close:hover{background:var(--color-surface-2);}
+.mnav-close .icon{width:20px;height:20px;}
+/* Los dos niveles viven uno al lado del otro sobre un riel que se desliza,
+   asi el cambio se lee como un movimiento y no como un parpadeo. */
+.mnav-viewport{flex:1;overflow:hidden;}
+.mnav-track{display:flex;width:200%;height:100%;transition:transform .34s cubic-bezier(.32,.72,0,1);}
+.mnav-track.at-cats{transform:translateX(-50%);}
+.mnav-pane{width:50%;height:100%;overflow-y:auto;overscroll-behavior:contain;padding:10px 10px 18px;transition:visibility 0s linear .34s;}
+.mnav-pane[aria-hidden="true"]{visibility:hidden;}
+.mnav-pane[aria-hidden="false"]{transition-delay:0s;}
+.mnav-row{display:flex;align-items:center;gap:12px;width:100%;padding:11px 10px;border-radius:var(--radius-md);text-align:left;font-weight:700;font-size:1rem;color:var(--color-text);transition:background-color .15s ease;}
+.mnav-row:hover{background:var(--color-surface-2);}
+.mnav-row:active{background:var(--color-surface-3);}
+.mnav-ico{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:11px;background:color-mix(in srgb, var(--cat-c,var(--color-brand-2)) 14%, transparent);color:var(--cat-c,var(--color-brand-2));}
+.mnav-ico .icon{width:20px;height:20px;}
+.mnav-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mnav-count{flex-shrink:0;font-size:.78rem;font-weight:800;color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+.mnav-chevron{width:16px;height:16px;flex-shrink:0;color:var(--color-text-muted);}
+.mnav-row.is-active{background:color-mix(in srgb, var(--cat-c) 12%, transparent);color:var(--cat-c);}
+.mnav-row.is-active .mnav-count{color:var(--cat-c);}
+.mnav-sep{height:1px;background:var(--color-border);margin:10px 12px;}
+@keyframes mnavRowIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:none;}}
+.mnav-pane[aria-hidden="false"] .mnav-row{animation:mnavRowIn .32s cubic-bezier(.32,.72,0,1) backwards;animation-delay:calc(var(--i,0) * 22ms);}
+.mnav-foot{flex-shrink:0;border-top:1px solid var(--color-border);padding:12px 12px max(12px,env(safe-area-inset-bottom));}
+.mnav-wa{display:flex;align-items:center;gap:12px;padding:8px;border-radius:var(--radius-md);transition:background-color .15s ease;}
+.mnav-wa:hover{background:var(--color-surface-2);}
+.mnav-wa .mnav-ico{background:color-mix(in srgb, var(--color-success) 15%, transparent);color:var(--color-success);}
+.mnav-wa-text{display:flex;flex-direction:column;line-height:1.25;min-width:0;}
+.mnav-wa-text b{font-size:.92rem;font-weight:800;}
+.mnav-wa-text span{font-size:.72rem;color:var(--color-text-muted);}
 
 /* ============ BUTTONS ============ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;font-size:.92rem;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease,opacity .15s ease;white-space:nowrap;}
@@ -646,6 +674,8 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.2" fill="currentColor" stroke="none"/><path d="M2.5 3h2.4l2.4 13.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21.5 8H6"/></symbol>
 <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.2c1.3-3.6 4.2-5.6 7.5-5.6s6.2 2 7.5 5.6"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.6L12 3.5l8.5 7.1"/><path d="M5.6 9.6V20h12.8V9.6"/><path d="M9.9 20v-5.3h4.2V20"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.3" y2="15.3"/></symbol>
 <symbol id="i-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
 <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
@@ -725,18 +755,26 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav" id="mobileNav" aria-hidden="true">
     <div class="scrim" data-close-mobile></div>
-    <div class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:8px;">
-        <span style="display:flex;align-items:center;gap:4px;min-width:0;">
-          <button class="icon-btn mobile-nav-back hidden" style="color:var(--color-text);" id="mobileNavBack" aria-label="Volver al menú"><svg class="icon"><use href="#i-chevron-l"/></svg></button>
-          <span class="font-display" style="font-size:1.2rem;font-weight:700;" id="mobileNavTitle">Menú</span>
-        </span>
-        <button class="icon-btn" style="color:var(--color-text);flex-shrink:0;" data-close-mobile><svg class="icon"><use href="#i-close"/></svg></button>
+    <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="mobileNavTitle" tabindex="-1" id="mobileNavPanel">
+      <div class="mnav-head">
+        <h2 class="mnav-title" id="mobileNavTitle" aria-live="polite">Menú</h2>
+        <button class="mnav-close" data-close-mobile aria-label="Cerrar menú"><svg class="icon"><use href="#i-close"/></svg></button>
       </div>
-      <div id="mobileNavLinks"></div>
-    </div>
+      <div class="mnav-viewport">
+        <div class="mnav-track" id="mobileNavTrack">
+          <nav class="mnav-pane" id="mobileNavL1" aria-label="Menú principal"></nav>
+          <nav class="mnav-pane" id="mobileNavL2" aria-label="Todas las categorías" aria-hidden="true"></nav>
+        </div>
+      </div>
+      <div class="mnav-foot">
+        <a class="mnav-wa" href="https://wa.me/17869019115" target="_blank" rel="noopener">
+          <span class="mnav-ico"><svg class="icon"><use href="#i-whatsapp"/></svg></span>
+          <span class="mnav-wa-text"><b>(786) 901-9115</b><span>Escríbenos por WhatsApp</span></span>
+        </a>
+      </div>
+    </aside>
   </div>
 
   <main class="main" id="app"></main>
@@ -983,19 +1021,46 @@ function updateAccountLabel(){
 }
 /* El menú lateral tiene dos niveles: 'menu' (Inicio, Categorías, Mi cuenta)
    y 'cats' (Inicio + todas las categorías). Se entra a 'cats' tocando
-   "Categorías", y al abrir el menú estando ya dentro de una categoría. */
+   "Categorías". El nivel se decide en cada apertura a partir de la ruta:
+   dentro de una categoría abre directo en 'cats'. Por eso no hace falta un
+   control de "volver" — cerrar y reabrir siempre deja el nivel correcto. */
 var mobileNavMode = 'menu';
 function setMobileNavMode(mode){
   mobileNavMode = mode;
   renderMobileNav();
 }
 function renderMobileNav(){
-  var links = document.getElementById('mobileNavLinks');
-  if(!links) return;
+  var l1 = document.getElementById('mobileNavL1');
+  var l2 = document.getElementById('mobileNavL2');
+  if(!l1 || !l2) return;
   var isCats = mobileNavMode === 'cats';
-  links.innerHTML = isCats ? mobileNavCatsHtml() : mobileNavMenuHtml();
+  var route = parseRoute();
+  /* Se regenera el contenido en cada cambio de nivel: ademas de refrescar
+     la categoria activa, reinicia la entrada escalonada de las filas. */
+  l1.innerHTML = mobileNavMenuHtml();
+  l2.innerHTML = mobileNavCatsHtml(route.name==='catalog' ? route.cat : null);
+  l1.setAttribute('aria-hidden', isCats ? 'true' : 'false');
+  l2.setAttribute('aria-hidden', isCats ? 'false' : 'true');
+  document.getElementById('mobileNavTrack').classList.toggle('at-cats', isCats);
   document.getElementById('mobileNavTitle').textContent = isCats ? 'Todas las categorías' : 'Menú';
-  document.getElementById('mobileNavBack').classList.toggle('hidden', !isCats);
+}
+function openMobileNav(){
+  setMobileNavMode(parseRoute().name==='catalog' ? 'cats' : 'menu');
+  var nav = document.getElementById('mobileNav');
+  nav.classList.add('open');
+  nav.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('mobileNavPanel').focus();
+}
+function closeMobileNav(){
+  var nav = document.getElementById('mobileNav');
+  if(!nav.classList.contains('open')) return;
+  nav.classList.remove('open');
+  nav.setAttribute('aria-hidden','true');
+  /* El carrito usa el mismo bloqueo de scroll: no liberarlo si sigue abierto. */
+  if(!document.getElementById('cartDrawer').classList.contains('open')) document.body.style.overflow='';
+  var toggle = document.getElementById('menuToggle');
+  if(toggle) toggle.focus();
 }
 
 /* ============================================================
@@ -1037,7 +1102,6 @@ function render(route){
   updateCartBadge();
   updateAccountLabel();
   closeCatMenu();
-  setMobileNavMode(route.name==='catalog' ? 'cats' : 'menu');
 }
 
 /* ============================================================
@@ -1101,15 +1165,35 @@ function catMenuListHtml(){
     return '<a href="#/catalogo/'+c.id+'" class="cat-menu-item">'+c.label+'</a>';
   }).join('');
 }
-function mobileNavMenuHtml(){
-  return '<a href="#/" data-close-mobile>Inicio</a>'
-    + '<button type="button" class="nav-row" data-nav-cats>Categorías<svg class="icon"><use href="#i-chevron-r"/></svg></button>'
-    + '<a href="#/cuenta" data-close-mobile>Mi cuenta</a>';
+function catProductCount(id){
+  return PRODUCTS.filter(function(p){ return p.cat===id; }).length;
 }
-function mobileNavCatsHtml(){
-  return '<a href="#/" data-close-mobile>Inicio</a>' + CATEGORIES.map(function(c){
-    return '<a href="#/catalogo/'+c.id+'" data-close-mobile>'+c.label+'</a>';
-  }).join('');
+function mobileNavRowHtml(r, i){
+  var cls = 'mnav-row' + (r.accent ? ' '+r.accent : '') + (r.active ? ' is-active' : '');
+  var inner = '<span class="mnav-ico"><svg class="icon"><use href="#'+r.icon+'"/></svg></span>'
+    + '<span class="mnav-label">'+r.label+'</span>'
+    + (r.count!=null ? '<span class="mnav-count">'+r.count+'</span>' : '')
+    + (r.chevron ? '<svg class="icon mnav-chevron"><use href="#i-chevron-r"/></svg>' : '');
+  var attrs = 'class="'+cls+'" style="--i:'+i+'"';
+  if(r.opensCats) return '<button type="button" '+attrs+' data-nav-cats>'+inner+'</button>';
+  return '<a href="'+r.href+'" '+attrs+' data-close-mobile'+(r.active?' aria-current="page"':'')+'>'+inner+'</a>';
+}
+function mobileNavMenuHtml(){
+  return [
+    {href:'#/', icon:'i-home', label:'Inicio'},
+    {opensCats:true, icon:'i-grid', label:'Categorías', count:CATEGORIES.length, chevron:true},
+    {href:'#/cuenta', icon:'i-user', label:'Mi cuenta'}
+  ].map(mobileNavRowHtml).join('');
+}
+function mobileNavCatsHtml(activeCat){
+  return mobileNavRowHtml({href:'#/', icon:'i-home', label:'Inicio'}, 0)
+    + '<div class="mnav-sep"></div>'
+    + CATEGORIES.map(function(c, i){
+        return mobileNavRowHtml({
+          href:'#/catalogo/'+c.id, icon:c.icon, label:c.label,
+          count:catProductCount(c.id), accent:c.accent, active:c.id===activeCat
+        }, i+1);
+      }).join('');
 }
 
 /* ============================================================
@@ -1714,13 +1798,15 @@ function initGlobalEvents(){
   document.getElementById('cartToggle').addEventListener('click', openDrawer);
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   document.getElementById('drawerScrim').addEventListener('click', closeDrawer);
-  document.getElementById('menuToggle').addEventListener('click', function(){ document.getElementById('mobileNav').classList.add('open'); });
-  document.getElementById('mobileNavBack').addEventListener('click', function(){ setMobileNavMode('menu'); });
+  document.getElementById('menuToggle').addEventListener('click', openMobileNav);
   /* Delegado: los enlaces del menú se vuelven a generar al cambiar de nivel,
      asi que no sirve enganchar cada uno una sola vez al arrancar. */
   document.getElementById('mobileNav').addEventListener('click', function(e){
     if(e.target.closest('[data-nav-cats]')){ setMobileNavMode('cats'); return; }
-    if(e.target.closest('[data-close-mobile]')){ this.classList.remove('open'); }
+    if(e.target.closest('[data-close-mobile]')) closeMobileNav();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeMobileNav();
   });
   document.getElementById('catMenuList').innerHTML = catMenuListHtml();
   var catMenuBtn = document.getElementById('catMenuBtn');
