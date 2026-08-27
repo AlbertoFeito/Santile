@@ -306,9 +306,18 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
 .card{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s ease;}
 .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);}
+.card-media-wrap{position:relative;}
 .card-media{position:relative;aspect-ratio:1/.82;background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 20%, var(--color-surface-2)),var(--color-surface-2));display:flex;align-items:center;justify-content:center;}
 .card-media .icon{width:46%;height:46%;color:var(--cat-c);opacity:.92;}
 .card-tag{position:absolute;left:10px;bottom:10px;background:var(--color-success);color:var(--color-success-ink);font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.02em;}
+.fav-btn{position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.94);color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);transition:transform .15s cubic-bezier(.34,1.56,.64,1),color .15s ease;}
+.fav-btn:hover{transform:scale(1.1);}
+.fav-btn:active{transform:scale(.92);}
+.fav-btn .icon{width:17px;height:17px;}
+.fav-btn.active{color:var(--color-danger);}
+.fav-btn.active .icon{fill:currentColor;}
+:root[data-theme="dark"] .fav-btn{background:rgba(18,34,54,.92);color:var(--color-text-muted);}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fav-btn{background:rgba(18,34,54,.92);color:var(--color-text-muted);}}
 .card-badge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:5px;background:var(--color-brand);color:#fff;font-size:.64rem;font-weight:800;padding:5px 10px 5px 7px;border-radius:999px;letter-spacing:.03em;box-shadow:var(--shadow-sm);}
 .card-badge.oferta{background:var(--color-danger);}
 .card-badge .icon{width:12px;height:12px;}
@@ -417,7 +426,9 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .pdp{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;padding:44px 0 20px;}
 .pdp-media{position:sticky;top:90px;align-self:start;}
 .pdp-media .media-box{aspect-ratio:1;border-radius:var(--radius-lg);background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 22%, var(--color-surface-2)),var(--color-surface-2));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.pdp-media .media-box .icon{width:42%;height:42%;color:var(--cat-c);}
+.pdp-media .media-box > .icon{width:42%;height:42%;color:var(--cat-c);}
+.pdp-fav-btn{top:16px;right:16px;bottom:auto;width:44px;height:44px;}
+.pdp-fav-btn .icon{width:21px;height:21px;}
 .pdp-info .card-cat{font-size:.75rem;}
 .pdp-info h1{font-size:clamp(1.6rem,3vw,2.2rem);margin:8px 0 12px;}
 .pdp-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
@@ -574,6 +585,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 4.5 5.1 1.5 1.5 0 0 1 6 3.5z"/></symbol>
 <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5.5A1.5 1.5 0 0 1 4 19.5v-15A1.5 1.5 0 0 1 5.5 3H9"/><path d="M16 16l5-4-5-4"/><path d="M21 12H9"/></symbol>
 <symbol id="i-package" viewBox="0 0 24 24"><rect x="3.5" y="7" width="17" height="13" rx="1.5"/><path d="M3.5 7l4-4h9l4 4"/><path d="M8 11h8"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.3s-7.8-4.7-10.2-9.6C.3 7.4 2.2 3.9 5.9 3.4c2.3-.3 4.4.9 6.1 3.1 1.7-2.2 3.8-3.4 6.1-3.1 3.7.5 5.6 4 4.1 7.3-2.4 4.9-10.2 9.6-10.2 9.6z"/></symbol>
 <!-- category icons -->
 <symbol id="cat-carnicos" viewBox="0 0 48 48"><path d="M15 30c-4-2-6-6-4-11 2-5 8-9 14-8 5 1 8 5 8 9 0 6-5 9-9 13-3 3-4 7-3 10-4 0-8-2-9-6-1-3 0-5 3-7z"/><circle cx="30" cy="17" r="3.4"/><path d="M18 22l4 4M22 19l4 4" stroke-linecap="round"/></symbol>
 <symbol id="cat-alimentos" viewBox="0 0 48 48"><path d="M15 12h18l3 8c2 5 2 10 0 14-2 5-6 8-12 8s-10-3-12-8c-2-4-2-9 0-14z"/><path d="M15 12c0-3 2-5 4-5M33 12c0-3-2-5-4-5" stroke-linecap="round"/><circle cx="20" cy="26" r="1.6" fill="currentColor" stroke="none"/><circle cx="26" cy="30" r="1.6" fill="currentColor" stroke="none"/><circle cx="24" cy="22" r="1.6" fill="currentColor" stroke="none"/><circle cx="29" cy="24" r="1.6" fill="currentColor" stroke="none"/></symbol>
@@ -751,6 +763,7 @@ var state = {
   cart: {},
   user: null,
   orders: [],
+  favorites: {},
   checkout: {step:1, addressChoice:null, newAddress:null, cardName:''}
 };
 
@@ -762,11 +775,20 @@ function loadState(){
     if(u) state.user = JSON.parse(u);
     var o = localStorage.getItem('santile_orders_v1');
     if(o) state.orders = JSON.parse(o);
+    var f = localStorage.getItem('santile_favorites_v1');
+    if(f) state.favorites = JSON.parse(f);
   }catch(e){}
 }
 function saveCart(){ try{ localStorage.setItem('santile_cart_v1', JSON.stringify(state.cart)); }catch(e){} }
 function saveUser(){ try{ if(state.user) localStorage.setItem('santile_user_v1', JSON.stringify(state.user)); else localStorage.removeItem('santile_user_v1'); }catch(e){} }
 function saveOrders(){ try{ localStorage.setItem('santile_orders_v1', JSON.stringify(state.orders)); }catch(e){} }
+function saveFavorites(){ try{ localStorage.setItem('santile_favorites_v1', JSON.stringify(state.favorites)); }catch(e){} }
+function toggleFavorite(id){
+  if(state.favorites[id]) delete state.favorites[id];
+  else state.favorites[id] = true;
+  saveFavorites();
+  return !!state.favorites[id];
+}
 
 function cartCount(){
   var n=0; for(var k in state.cart){ n += state.cart[k]; } return n;
@@ -918,13 +940,17 @@ function productCard(p){
   if(p.badge==='premium') badgeHtml = '<span class="card-badge"><svg class="icon"><use href="#i-shield"/></svg>Premium</span>';
   else if(p.badge==='oferta') badgeHtml = '<span class="card-badge oferta"><svg class="icon"><use href="#i-star"/></svg>Oferta</span>';
   else if(p.badge==='vendido') badgeHtml = '<span class="card-badge"><svg class="icon"><use href="#i-star"/></svg>Más vendido</span>';
+  var isFav = !!state.favorites[p.id];
   return '<div class="card '+cat.accent+'">'+
-    '<a href="#/producto/'+p.id+'" class="card-media" aria-label="'+p.name+'">'+
-      badgeHtml+
-      '<span class="card-box-note">'+p.boxQty.split('·')[0].trim()+'</span>'+
-      '<svg class="icon"><use href="#'+cat.icon+'"/></svg>'+
-      '<span class="card-tag">'+cat.label+'</span>'+
-    '</a>'+
+    '<div class="card-media-wrap">'+
+      '<a href="#/producto/'+p.id+'" class="card-media" aria-label="'+p.name+'">'+
+        badgeHtml+
+        '<span class="card-box-note">'+p.boxQty.split('·')[0].trim()+'</span>'+
+        '<svg class="icon"><use href="#'+cat.icon+'"/></svg>'+
+        '<span class="card-tag">'+cat.label+'</span>'+
+      '</a>'+
+      '<button type="button" class="fav-btn'+(isFav?' active':'')+'" data-fav="'+p.id+'" aria-label="'+(isFav?'Quitar de favoritos':'Agregar a favoritos')+'" aria-pressed="'+isFav+'"><svg class="icon"><use href="#i-heart"/></svg></button>'+
+    '</div>'+
     '<div class="card-body">'+
       '<span class="card-cat">'+cat.label+'</span>'+
       '<h3 class="card-title"><a href="#/producto/'+p.id+'">'+p.name+'</a></h3>'+
@@ -1032,11 +1058,14 @@ function viewProduct(id){
   if(p.badge==='premium') badgeHtml='<span class="card-badge" style="position:static;"><svg class="icon"><use href="#i-shield"/></svg>Calidad Premium</span>';
   else if(p.badge==='oferta') badgeHtml='<span class="card-badge oferta" style="position:static;"><svg class="icon"><use href="#i-star"/></svg>Oferta especial</span>';
   else if(p.badge==='vendido') badgeHtml='<span class="card-badge" style="position:static;"><svg class="icon"><use href="#i-star"/></svg>Más vendido</span>';
+  var pdpIsFav = !!state.favorites[p.id];
   var related = PRODUCTS.filter(function(x){return x.cat===p.cat && x.id!==p.id;}).slice(0,4);
   return ''+
   '<div class="page-hero"><div class="wrap"><nav class="breadcrumb"><a href="#/">Inicio</a><svg class="icon"><use href="#i-chevron-r"/></svg><a href="#/catalogo/'+p.cat+'">'+cat.label+'</a><svg class="icon"><use href="#i-chevron-r"/></svg><span>'+p.name+'</span></nav></div></div>'+
   '<div class="wrap pdp '+cat.accent+'">'+
-    '<div class="pdp-media"><div class="media-box"><svg class="icon"><use href="#'+cat.icon+'"/></svg></div></div>'+
+    '<div class="pdp-media"><div class="media-box"><svg class="icon"><use href="#'+cat.icon+'"/></svg>'+
+      '<button type="button" class="fav-btn pdp-fav-btn'+(pdpIsFav?' active':'')+'" data-fav="'+p.id+'" aria-label="'+(pdpIsFav?'Quitar de favoritos':'Agregar a favoritos')+'" aria-pressed="'+pdpIsFav+'"><svg class="icon"><use href="#i-heart"/></svg></button>'+
+    '</div></div>'+
     '<div class="pdp-info">'+
       '<span class="card-cat">'+cat.label+'</span>'+
       '<h1 class="font-display">'+p.name+'</h1>'+
@@ -1261,6 +1290,22 @@ function bindPageEvents(route){
       addToCart(id, 1);
       btn.classList.add('bump');
       setTimeout(function(){btn.classList.remove('bump');},350);
+    });
+  });
+
+  // favorite (heart) toggle buttons
+  app.querySelectorAll('[data-fav]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = btn.dataset.fav;
+      var isFav = toggleFavorite(id);
+      document.querySelectorAll('[data-fav="'+id+'"]').forEach(function(b){
+        b.classList.toggle('active', isFav);
+        b.setAttribute('aria-pressed', isFav);
+        b.setAttribute('aria-label', isFav ? 'Quitar de favoritos' : 'Agregar a favoritos');
+      });
+      var p = PROD_MAP[id];
+      if(p) showToast(isFav ? p.name+' agregado a favoritos' : p.name+' quitado de favoritos', 'i-heart');
     });
   });
 
