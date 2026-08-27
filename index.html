@@ -459,10 +459,14 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .pdp-sticky-thumb{width:44px;height:44px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 22%, var(--color-surface-2)),var(--color-surface-2));}
 .pdp-sticky-thumb .icon{width:58%;height:58%;color:var(--cat-c);}
 @media (max-width:700px){
-  .pdp-sticky-inner{padding:8px 14px;gap:10px;justify-content:center;}
-  .pdp-sticky-actions{gap:8px;}
-  .pdp-sticky-price{font-size:1.05rem;}
-  .pdp-sticky-info{display:none;}
+  .pdp-sticky-inner{padding:8px 14px;gap:8px;}
+  .pdp-sticky-actions{gap:6px;}
+  .pdp-sticky-price{font-size:1rem;}
+  .pdp-sticky-info{flex:1;min-width:0;}
+  .pdp-sticky-thumb{display:none;}
+  .pdp-sticky-text{flex:1;min-width:0;}
+  .pdp-sticky-text h4{max-width:none;font-size:.8rem;}
+  .pdp-sticky-text span{display:none;}
   .pdp-sticky-actions #pdpStickyAddBtn span{display:none;}
 }
 
@@ -572,9 +576,9 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .confirm-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
 
 /* ============ ACCOUNT ============ */
-.account-layout{display:grid;grid-template-columns:260px 1fr;gap:30px;padding:40px 0 70px;}
+.account-layout{display:grid;grid-template-columns:260px 1fr;gap:30px;padding-top:40px;padding-bottom:70px;}
 @media (max-width:800px){.account-layout{grid-template-columns:1fr;}}
-.account-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:24px;}
+.account-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:24px;min-width:0;}
 .avatar{width:64px;height:64px;border-radius:50%;background:var(--color-brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.5rem;font-weight:700;margin-bottom:12px;}
 .account-nav{display:flex;flex-direction:column;gap:4px;margin-top:18px;}
 .account-nav button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-weight:700;font-size:.88rem;color:var(--color-text-muted);text-align:left;}
@@ -595,6 +599,30 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .status-pill{font-size:.68rem;font-weight:800;padding:4px 11px;border-radius:999px;background:var(--color-success);color:var(--color-success-ink);text-transform:uppercase;letter-spacing:.03em;}
 .empty-state{text-align:center;padding:50px 20px;color:var(--color-text-muted);}
 .empty-state .icon{width:48px;height:48px;color:var(--color-border);margin:0 auto 14px;}
+.fav-list{display:flex;flex-direction:column;}
+.fav-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--color-border);}
+.fav-thumb{width:64px;height:64px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 20%, var(--color-surface-2)),var(--color-surface-2));}
+.fav-thumb .icon{width:52%;height:52%;color:var(--cat-c);}
+.fav-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.fav-name{font-weight:700;font-size:.95rem;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s ease;}
+.fav-name:hover{color:var(--color-brand-2);}
+.fav-cat{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--cat-c);}
+.fav-price{font-weight:800;color:var(--color-brand);margin-top:2px;}
+.fav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.fav-actions .fav-btn{position:static;box-shadow:none;background:transparent;width:38px;height:38px;}
+.fav-actions .fav-btn:hover{background:var(--color-surface-2);}
+.fav-actions .add-btn{width:38px;height:38px;}
+.fav-actions .add-btn .icon{width:17px;height:17px;}
+.fav-pagination{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:22px;}
+.fav-pagination button{width:36px;height:36px;border-radius:999px;border:1.5px solid var(--color-border);display:flex;align-items:center;justify-content:center;color:var(--color-text);transition:background-color .15s ease;flex-shrink:0;}
+.fav-pagination button:hover:not(:disabled){background:var(--color-surface-2);}
+.fav-pagination button:disabled{opacity:.35;cursor:not-allowed;}
+.fav-pagination .page-info{font-size:.85rem;font-weight:700;color:var(--color-text-muted);white-space:nowrap;}
+@media (max-width:480px){
+  .fav-thumb{width:52px;height:52px;border-radius:10px;}
+  .fav-name{font-size:.86rem;}
+  .fav-actions{gap:4px;}
+}
 
 /* ============ MISC UTIL ============ */
 .mt-8{margin-top:8px;}
@@ -1297,11 +1325,13 @@ function viewAccount(tab){
   var nav = [
     {id:'perfil', label:'Mi perfil', icon:'i-user'},
     {id:'direcciones', label:'Direcciones', icon:'i-map'},
-    {id:'pedidos', label:'Mis pedidos', icon:'i-package'}
+    {id:'pedidos', label:'Mis pedidos', icon:'i-package'},
+    {id:'favoritos', label:'Mis favoritos', icon:'i-heart'}
   ];
   var content = '';
   if(tab==='direcciones') content = accountAddresses();
   else if(tab==='pedidos') content = accountOrders();
+  else if(tab==='favoritos') content = accountFavorites();
   else content = accountProfile();
 
   return '<div class="wrap account-layout">'+
@@ -1345,6 +1375,42 @@ function accountOrders(){
       var d = new Date(o.date);
       return '<div class="order-row"><div><div class="oid">#'+o.id+'</div><div class="odate">'+d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'})+' · '+o.items.length+' producto(s)</div></div><div style="display:flex;align-items:center;gap:14px;"><span class="status-pill">Confirmado</span><span class="price" style="font-weight:800;">'+moneyFull(o.total)+'</span></div></div>';
     }).join('');
+}
+var favPage = 1;
+var FAV_PAGE_SIZE = 5;
+function accountFavorites(){
+  var ids = Object.keys(state.favorites).filter(function(id){return !!PROD_MAP[id];});
+  if(ids.length===0){
+    return '<div class="empty-state"><svg class="icon"><use href="#i-heart"/></svg><h3>Aún no tienes favoritos</h3><p>Toca el corazón en cualquier producto para guardarlo aquí.</p><a href="#/catalogo/carnicos" class="btn btn-primary mt-8">Ver catálogo</a></div>';
+  }
+  var totalPages = Math.max(1, Math.ceil(ids.length / FAV_PAGE_SIZE));
+  if(favPage > totalPages) favPage = totalPages;
+  if(favPage < 1) favPage = 1;
+  var pageIds = ids.slice((favPage-1)*FAV_PAGE_SIZE, favPage*FAV_PAGE_SIZE);
+  var rows = pageIds.map(function(id){
+    var p = PROD_MAP[id];
+    var cat = CAT_MAP[p.cat];
+    return '<div class="fav-row '+cat.accent+'">'+
+      '<a href="#/producto/'+p.id+'" class="fav-thumb"><svg class="icon"><use href="#'+cat.icon+'"/></svg></a>'+
+      '<div class="fav-info">'+
+        '<a href="#/producto/'+p.id+'" class="fav-name">'+p.name+'</a>'+
+        '<span class="fav-cat">'+cat.label+'</span>'+
+        '<span class="fav-price price">'+money(p.boxPrice)+'</span>'+
+      '</div>'+
+      '<div class="fav-actions">'+
+        '<button type="button" class="fav-btn active" data-fav="'+p.id+'" aria-label="Quitar '+p.name+' de favoritos" aria-pressed="true"><svg class="icon"><use href="#i-heart"/></svg></button>'+
+        '<button class="add-btn" data-add="'+p.id+'" aria-label="Agregar '+p.name+' al carrito"><svg class="icon"><use href="#i-plus"/></svg></button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  var pagination = totalPages > 1 ?
+    '<div class="fav-pagination">'+
+      '<button type="button" id="favPrevBtn" '+(favPage<=1?'disabled':'')+' aria-label="Página anterior"><svg class="icon"><use href="#i-chevron-l"/></svg></button>'+
+      '<span class="page-info">Página '+favPage+' de '+totalPages+'</span>'+
+      '<button type="button" id="favNextBtn" '+(favPage>=totalPages?'disabled':'')+' aria-label="Página siguiente"><svg class="icon"><use href="#i-chevron-r"/></svg></button>'+
+    '</div>' : '';
+  return '<h2 class="font-display" style="font-size:1.3rem;margin-bottom:12px;">Mis favoritos</h2>'+
+    '<div class="fav-list">'+rows+'</div>'+pagination;
 }
 function viewLogin(){
   return '<div class="wrap"><div class="login-box">'+
@@ -1561,8 +1627,22 @@ function bindPageEvents(route){
       return;
     }
     app.querySelectorAll('[data-acc-tab]').forEach(function(b){
-      b.addEventListener('click', function(){ navigate('/cuenta/'+b.dataset.accTab); });
+      b.addEventListener('click', function(){
+        if(b.dataset.accTab==='favoritos') favPage = 1;
+        navigate('/cuenta/'+b.dataset.accTab);
+      });
     });
+
+    if(route.tab==='favoritos'){
+      var favPrevBtn = document.getElementById('favPrevBtn');
+      var favNextBtn = document.getElementById('favNextBtn');
+      if(favPrevBtn) favPrevBtn.addEventListener('click', function(){ favPage--; render(route); });
+      if(favNextBtn) favNextBtn.addEventListener('click', function(){ favPage++; render(route); });
+      app.querySelectorAll('.fav-list [data-fav]').forEach(function(b){
+        b.addEventListener('click', function(){ setTimeout(function(){ render(route); }, 220); });
+      });
+    }
+
     var logoutBtn = document.getElementById('logoutBtn');
     if(logoutBtn) logoutBtn.addEventListener('click', function(){ state.user=null; saveUser(); showToast('Sesión cerrada','i-check'); navigate('/'); });
 
