@@ -128,11 +128,6 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   border-bottom:1px solid var(--color-border);
 }
 .header-inner{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 20px;max-width:1240px;margin:0 auto;}
-@media (max-width:760px){
-  .search-bar{order:10;flex-basis:100%;}
-  .brand .logo-mark{width:44px;height:44px;}
-  .brand-text .tagline{display:none;}
-}
 .brand{display:flex;align-items:center;gap:10px;min-width:0;}
 .brand .logo-mark{width:75px;height:75px;flex-shrink:0;border-radius:0;overflow:hidden;display:block;}
 .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
@@ -148,6 +143,12 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .search-bar .icon{width:18px;height:18px;color:var(--color-text-muted);flex-shrink:0;}
 .search-input{flex:1;min-width:0;border:none;background:transparent;outline:none;font:inherit;font-size:.9rem;color:var(--color-text);}
 .search-input::placeholder{color:var(--color-text-muted);}
+@media (max-width:760px){
+  .search-bar{order:10;flex-basis:100%;}
+  .brand{flex:1;justify-content:center;}
+  .brand .logo-mark{width:44px;height:44px;}
+  .brand-text{display:none;}
+}
 
 /* mobile drawer nav */
 .mobile-nav{position:fixed;inset:0;z-index:60;visibility:hidden;}
@@ -221,7 +222,15 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .cat-card h3{font-size:.88rem;font-family:var(--font-body);font-weight:700;margin:0;}
 .cat-card span{display:block;font-size:.75rem;color:var(--color-text-muted);margin:0;}
 @media (max-width:900px){.cat-rail{grid-template-columns:repeat(3,1fr);}}
-@media (max-width:560px){.cat-rail{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){
+  .cat-rail{grid-template-columns:repeat(4,1fr);gap:10px;}
+  .cat-card{gap:8px;}
+  .cat-card .cat-icon-wrap{width:66px;height:66px;}
+  .cat-card .cat-icon-wrap .icon{width:28px;height:28px;}
+  .cat-card h3{font-size:.68rem;}
+  .cat-card span{font-size:.6rem;}
+  .cat-section-head{justify-content:center;text-align:center;}
+}
 
 /* category accent colors */
 .acc-carnicos{--cat-c:#C23B3B;}
@@ -875,7 +884,7 @@ function viewHome(){
   return ''+
 
   '<section class="section wrap" style="padding-top:32px;">'+
-    '<div class="section-head"><div><h2>Compra por categoría</h2><p>Elige la categoría y arma tu caja ideal.</p></div></div>'+
+    '<div class="section-head cat-section-head"><div><h2>Compra por categoría</h2><p>Elige la categoría y arma tu caja ideal.</p></div></div>'+
     '<div class="cat-rail">'+catRailHtml()+'</div>'+
   '</section>'+
 
