@@ -184,7 +184,11 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .mobile-nav.open .scrim{opacity:1;}
 .mobile-nav .panel{position:absolute;top:0;left:0;bottom:0;width:78%;max-width:320px;background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-lg);transform:translateX(-100%);transition:transform .3s cubic-bezier(.32,.72,0,1);padding:20px;overflow-y:auto;}
 .mobile-nav.open .panel{transform:translateX(0);}
-.mobile-nav .panel a{display:block;padding:12px 8px;font-weight:700;font-size:1.05rem;border-bottom:1px solid var(--color-border);}
+.mobile-nav .panel a,.mobile-nav .panel .nav-row{display:block;padding:12px 8px;font-weight:700;font-size:1.05rem;border-bottom:1px solid var(--color-border);}
+.mobile-nav .panel .nav-row{width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.mobile-nav .panel .nav-row .icon{width:16px;height:16px;color:var(--color-text-muted);}
+.mobile-nav-back{width:32px;height:32px;margin-left:-6px;flex-shrink:0;}
+.mobile-nav-back .icon{width:20px;height:20px;}
 
 /* ============ BUTTONS ============ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;font-size:.92rem;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease,opacity .15s ease;white-space:nowrap;}
@@ -724,13 +728,14 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   <div class="mobile-nav" id="mobileNav">
     <div class="scrim" data-close-mobile></div>
     <div class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-        <span class="font-display" style="font-size:1.2rem;font-weight:700;" id="mobileNavTitle">Menú</span>
-        <button class="icon-btn" style="color:var(--color-text);" data-close-mobile><svg class="icon"><use href="#i-close"/></svg></button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:8px;">
+        <span style="display:flex;align-items:center;gap:4px;min-width:0;">
+          <button class="icon-btn mobile-nav-back hidden" style="color:var(--color-text);" id="mobileNavBack" aria-label="Volver al menú"><svg class="icon"><use href="#i-chevron-l"/></svg></button>
+          <span class="font-display" style="font-size:1.2rem;font-weight:700;" id="mobileNavTitle">Menú</span>
+        </span>
+        <button class="icon-btn" style="color:var(--color-text);flex-shrink:0;" data-close-mobile><svg class="icon"><use href="#i-close"/></svg></button>
       </div>
-      <a href="#/" data-close-mobile>Inicio</a>
-      <div id="mobileNavCats"></div>
-      <a href="#/cuenta" data-close-mobile>Mi cuenta</a>
+      <div id="mobileNavLinks"></div>
     </div>
   </div>
 
@@ -976,10 +981,21 @@ function updateAccountLabel(){
   if(!label) return;
   label.textContent = state.user ? state.user.name.split(' ')[0] : 'Mi cuenta';
 }
-function updateMobileNavTitle(route){
-  var title = document.getElementById('mobileNavTitle');
-  if(!title) return;
-  title.textContent = route.name==='catalog' ? 'Todas las categorías' : 'Menú';
+/* El menú lateral tiene dos niveles: 'menu' (Inicio, Categorías, Mi cuenta)
+   y 'cats' (Inicio + todas las categorías). Se entra a 'cats' tocando
+   "Categorías", y al abrir el menú estando ya dentro de una categoría. */
+var mobileNavMode = 'menu';
+function setMobileNavMode(mode){
+  mobileNavMode = mode;
+  renderMobileNav();
+}
+function renderMobileNav(){
+  var links = document.getElementById('mobileNavLinks');
+  if(!links) return;
+  var isCats = mobileNavMode === 'cats';
+  links.innerHTML = isCats ? mobileNavCatsHtml() : mobileNavMenuHtml();
+  document.getElementById('mobileNavTitle').textContent = isCats ? 'Todas las categorías' : 'Menú';
+  document.getElementById('mobileNavBack').classList.toggle('hidden', !isCats);
 }
 
 /* ============================================================
@@ -1021,7 +1037,7 @@ function render(route){
   updateCartBadge();
   updateAccountLabel();
   closeCatMenu();
-  updateMobileNavTitle(route);
+  setMobileNavMode(route.name==='catalog' ? 'cats' : 'menu');
 }
 
 /* ============================================================
@@ -1085,8 +1101,13 @@ function catMenuListHtml(){
     return '<a href="#/catalogo/'+c.id+'" class="cat-menu-item">'+c.label+'</a>';
   }).join('');
 }
+function mobileNavMenuHtml(){
+  return '<a href="#/" data-close-mobile>Inicio</a>'
+    + '<button type="button" class="nav-row" data-nav-cats>Categorías<svg class="icon"><use href="#i-chevron-r"/></svg></button>'
+    + '<a href="#/cuenta" data-close-mobile>Mi cuenta</a>';
+}
 function mobileNavCatsHtml(){
-  return CATEGORIES.map(function(c){
+  return '<a href="#/" data-close-mobile>Inicio</a>' + CATEGORIES.map(function(c){
     return '<a href="#/catalogo/'+c.id+'" data-close-mobile>'+c.label+'</a>';
   }).join('');
 }
@@ -1689,13 +1710,17 @@ function closeCatMenu(){
   wrap.closest('.cat-menu').classList.remove('open');
 }
 function initGlobalEvents(){
-  document.getElementById('mobileNavCats').innerHTML = mobileNavCatsHtml();
+  renderMobileNav();
   document.getElementById('cartToggle').addEventListener('click', openDrawer);
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   document.getElementById('drawerScrim').addEventListener('click', closeDrawer);
   document.getElementById('menuToggle').addEventListener('click', function(){ document.getElementById('mobileNav').classList.add('open'); });
-  document.querySelectorAll('[data-close-mobile]').forEach(function(el){
-    el.addEventListener('click', function(){ document.getElementById('mobileNav').classList.remove('open'); });
+  document.getElementById('mobileNavBack').addEventListener('click', function(){ setMobileNavMode('menu'); });
+  /* Delegado: los enlaces del menú se vuelven a generar al cambiar de nivel,
+     asi que no sirve enganchar cada uno una sola vez al arrancar. */
+  document.getElementById('mobileNav').addEventListener('click', function(e){
+    if(e.target.closest('[data-nav-cats]')){ setMobileNavMode('cats'); return; }
+    if(e.target.closest('[data-close-mobile]')){ this.classList.remove('open'); }
   });
   document.getElementById('catMenuList').innerHTML = catMenuListHtml();
   var catMenuBtn = document.getElementById('catMenuBtn');
