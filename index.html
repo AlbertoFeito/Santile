@@ -137,6 +137,8 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .icon-btn{position:relative;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:999px;color:var(--color-brand);transition:background-color .15s ease;}
 .icon-btn:hover{background:var(--color-surface-2);}
 .icon-btn .icon{width:21px;height:21px;}
+.account-btn{width:auto;padding:0 16px 0 12px;gap:8px;}
+.account-label{font-size:.85rem;font-weight:700;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;}
 .cart-count{position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--color-danger);color:#fff;font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;}
 .menu-toggle{display:flex;}
 .search-bar{flex:1;display:flex;align-items:center;gap:10px;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:999px;padding:0 16px;height:42px;min-width:0;}
@@ -151,6 +153,9 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   .brand-text{display:none;}
   .header-actions{order:unset;}
   .search-bar{order:10;flex-basis:100%;grid-column:1 / -1;}
+  .account-btn{width:42px;padding:0;}
+  .account-label{display:none;}
+  .header-actions .icon-btn .icon{width:24px;height:24px;}
 }
 
 /* mobile drawer nav */
@@ -203,6 +208,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   .top-strip-left{display:flex;align-items:center;gap:32px;}
   .top-strip-left .item{flex:none;}
   .top-strip-left .item:nth-child(2){justify-content:flex-start;}
+  .top-strip .icon{width:18px;height:18px;}
 }
 
 /* ============ HERO ============ */
@@ -648,7 +654,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos...">
       </div>
       <div class="header-actions">
-        <a href="#/cuenta" class="icon-btn" aria-label="Mi cuenta"><svg class="icon"><use href="#i-user"/></svg></a>
+        <a href="#/cuenta" class="icon-btn account-btn" aria-label="Mi cuenta"><svg class="icon"><use href="#i-user"/></svg><span class="account-label" id="accountLabel">Mi cuenta</span></a>
         <button class="icon-btn" id="cartToggle" aria-label="Carrito de compra">
           <svg class="icon"><use href="#i-cart"/></svg>
           <span class="cart-count hidden" id="cartCount">0</span>
@@ -911,6 +917,11 @@ function updateCartBadge(){
   if(n>0){ badge.textContent = n>99?'99+':n; badge.classList.remove('hidden'); }
   else{ badge.classList.add('hidden'); }
 }
+function updateAccountLabel(){
+  var label = document.getElementById('accountLabel');
+  if(!label) return;
+  label.textContent = state.user ? state.user.name.split(' ')[0] : 'Mi cuenta';
+}
 
 /* ============================================================
    ROUTER
@@ -949,6 +960,7 @@ function render(route){
   app.classList.add('fade-in');
   bindPageEvents(route);
   updateCartBadge();
+  updateAccountLabel();
 }
 
 /* ============================================================
