@@ -173,11 +173,26 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .btn-block{width:100%;}
 .btn-icon-only{width:40px;height:40px;padding:0;border-radius:999px;}
 
-/* ============ TRUST STRIP ============ */
-.trust-strip{background:var(--color-surface-2);border-bottom:1px solid var(--color-border);}
-.trust-strip .wrap{display:flex;flex-wrap:wrap;gap:22px;padding:11px 20px;font-size:.82rem;font-weight:700;color:var(--color-text-muted);align-items:center;justify-content:center;}
-.trust-strip .item{display:flex;align-items:center;gap:7px;}
-.trust-strip .icon{width:16px;height:16px;color:var(--color-accent-2);}
+/* ============ TOP STRIP ============ */
+.top-strip{background:var(--color-brand);color:#fff;}
+.top-strip .wrap{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:8px 16px;}
+.top-strip .item{display:flex;align-items:center;gap:6px;flex:1;min-width:0;}
+.top-strip .item:nth-child(2){justify-content:center;}
+.top-strip .item:last-child{justify-content:flex-end;text-align:right;}
+.top-strip .icon{width:15px;height:15px;flex-shrink:0;opacity:.9;}
+.top-strip .item-text{display:flex;flex-direction:column;line-height:1.2;min-width:0;}
+.top-strip .item-text .value{font-size:.74rem;font-weight:800;}
+.top-strip .item-text .label{font-size:.62rem;font-weight:600;opacity:.85;}
+@media (max-width:560px){
+  .top-strip .wrap{padding:6px 10px;gap:4px;}
+  .top-strip .item{gap:4px;}
+  .top-strip .icon{width:13px;height:13px;}
+  .top-strip .item-text .value{font-size:.62rem;}
+  .top-strip .item-text .label{font-size:.54rem;}
+}
+@media (max-width:340px){
+  .top-strip .item-text .label{display:none;}
+}
 
 /* ============ HERO ============ */
 .hero{position:relative;background:linear-gradient(155deg, var(--color-surface) 0%, var(--color-surface-2) 100%);color:var(--color-text);overflow:hidden;border-bottom:1px solid var(--color-border);}
@@ -548,6 +563,23 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 </svg>
 
 <div class="app-shell">
+  <div class="top-strip">
+    <div class="wrap">
+      <span class="item">
+        <svg class="icon"><use href="#i-map"/></svg>
+        <span class="item-text"><span class="value">Sancti Spíritus</span><span class="label">CP 60100</span></span>
+      </span>
+      <span class="item">
+        <svg class="icon"><use href="#i-shield"/></svg>
+        <span class="item-text"><span class="value">Calidad Premium</span><span class="label">Importado</span></span>
+      </span>
+      <span class="item">
+        <svg class="icon"><use href="#i-whatsapp"/></svg>
+        <span class="item-text"><span class="value">(786) 901-9115</span><span class="label">Escríbenos</span></span>
+      </span>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="header-inner">
       <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Abrir menú"><svg class="icon"><use href="#i-menu"/></svg></button>
@@ -568,14 +600,6 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
       </div>
     </div>
   </header>
-
-  <div class="trust-strip">
-    <div class="wrap">
-      <span class="item"><svg class="icon"><use href="#i-shield"/></svg> Calidad Premium Importada</span>
-      <span class="item"><svg class="icon"><use href="#i-truck"/></svg> Entrega a domicilio</span>
-      <span class="item"><svg class="icon"><use href="#i-whatsapp"/></svg> (786) 901-9115</span>
-    </div>
-  </div>
 
   <div class="mobile-nav" id="mobileNav">
     <div class="scrim" data-close-mobile></div>
