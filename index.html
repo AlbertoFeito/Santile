@@ -167,6 +167,8 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
 .btn-dark{background:var(--color-brand);color:#fff;}
 .btn-dark:hover{background:var(--color-brand-2);}
+.btn-light{background:#fff;color:var(--color-brand);box-shadow:var(--shadow-sm);}
+.btn-light:hover{background:var(--color-surface-2);box-shadow:var(--shadow-md);}
 .btn-ghost{background:transparent;color:var(--color-text);border:1.5px solid var(--color-border);}
 .btn-ghost:hover{border-color:var(--color-accent);}
 .btn-sm{padding:8px 16px;font-size:.82rem;}
@@ -329,10 +331,14 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .arch-divider{height:34px;background-repeat:repeat-x;background-position:top center;background-size:64px 34px;}
 
 /* ============ PROMO STRIP ============ */
-.promo-band{background:var(--color-accent);color:var(--color-accent-ink);border-radius:var(--radius-lg);padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-.promo-band .eyebrow{color:var(--color-brand);}
-.promo-band h3{font-size:1.4rem;max-width:32ch;color:var(--color-brand);}
-.promo-band p{color:var(--color-accent-ink);opacity:.85;margin-top:6px;max-width:48ch;}
+.promo-band{background:var(--color-brand);color:#fff;border-radius:var(--radius-lg);padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.promo-band .eyebrow{color:#fff;opacity:.85;}
+.promo-band h3{font-size:1.4rem;max-width:32ch;color:#fff;}
+.promo-band p{color:#fff;opacity:.85;margin-top:6px;max-width:48ch;}
+@media (max-width:560px){
+  .promo-band{padding:24px;text-align:center;justify-content:center;}
+  .promo-band h3, .promo-band p{max-width:none;}
+}
 
 /* ============ FOOTER ============ */
 .site-footer{background:#FFFFFF;color:var(--color-text-muted);margin-top:40px;border-top:1px solid var(--color-border);}
@@ -961,7 +967,7 @@ function viewHome(){
   '<section class="wrap" style="padding-bottom:60px;">'+
     '<div class="promo-band">'+
       '<div><span class="eyebrow">Entrega a domicilio</span><h3 class="font-display">Rápido, seguro y confiable</h3><p>Escríbenos por WhatsApp al (786) 901-9115 y te ayudamos a armar tu pedido.</p></div>'+
-      '<a href="#/catalogo/carnicos" class="btn btn-dark">Empezar a comprar</a>'+
+      '<a href="#/catalogo/carnicos" class="btn btn-light">Empezar a comprar</a>'+
     '</div>'+
   '</section>';
 }
