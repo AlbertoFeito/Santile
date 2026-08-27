@@ -213,17 +213,27 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .see-all .icon{width:16px;height:16px;}
 
 /* ============ CATEGORY RAIL ============ */
-.cat-rail{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.cat-rail{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
 .cat-card{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--color-text);text-align:center;transition:transform .2s cubic-bezier(.32,.72,0,1);}
+.cat-card.cat-card-hidden{display:none;}
 .cat-card:hover{transform:scale(1.05);}
 .cat-card .cat-icon-wrap{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--color-surface);border:2px solid var(--color-border);transition:box-shadow .2s ease;}
 .cat-card:hover .cat-icon-wrap{box-shadow:var(--shadow-md);border-color:var(--color-accent);}
 .cat-card .cat-icon-wrap .icon{width:50px;height:50px;}
 .cat-card h3{font-size:.88rem;font-family:var(--font-body);font-weight:700;margin:0;}
 .cat-card span{display:block;font-size:.75rem;color:var(--color-text-muted);margin:0;}
-@media (max-width:900px){.cat-rail{grid-template-columns:repeat(3,1fr);}}
+.cat-more-wrap{display:flex;justify-content:center;margin-top:28px;}
+.cat-more-btn{gap:10px;}
+.cat-more-badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--color-brand);color:#fff;font-size:.76rem;font-weight:800;}
+@media (max-width:900px){
+  .cat-rail{gap:12px;}
+  .cat-card .cat-icon-wrap{width:88px;height:88px;}
+  .cat-card .cat-icon-wrap .icon{width:38px;height:38px;}
+  .cat-card h3{font-size:.78rem;}
+  .cat-card span{font-size:.68rem;}
+}
 @media (max-width:560px){
-  .cat-rail{grid-template-columns:repeat(4,1fr);gap:10px;}
+  .cat-rail{gap:10px;}
   .cat-card{gap:8px;}
   .cat-card .cat-icon-wrap{width:66px;height:66px;}
   .cat-card .cat-icon-wrap .icon{width:28px;height:28px;}
@@ -238,6 +248,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .acc-aceite{--cat-c:#D98E2B;}
 .acc-dulces{--cat-c:#B84FA0;}
 .acc-galletas{--cat-c:#9C6B36;}
+.acc-generic{--cat-c:var(--color-brand-2);}
 .cat-icon-wrap{background:color-mix(in srgb, var(--cat-c) 16%, transparent);color:var(--cat-c);}
 
 /* ============ CHIP FILTERS ============ */
@@ -641,7 +652,18 @@ var CATEGORIES = [
   {id:'alimentos', label:'Alimentos', icon:'cat-alimentos', blurb:'Granos y víveres', accent:'acc-alimentos'},
   {id:'aceite', label:'Aceite y Condimentos', icon:'cat-aceite', blurb:'Para sazonar bien', accent:'acc-aceite'},
   {id:'dulces', label:'Dulces', icon:'cat-dulces', blurb:'Para endulzar', accent:'acc-dulces'},
-  {id:'galletas', label:'Galletas', icon:'cat-galletas', blurb:'Para acompañar', accent:'acc-galletas'}
+  {id:'galletas', label:'Galletas', icon:'cat-galletas', blurb:'Para acompañar', accent:'acc-galletas'},
+  {id:'bebidas', label:'Bebidas', icon:'i-box', blurb:'Refrescos y jugos', accent:'acc-generic'},
+  {id:'panaderia', label:'Panadería', icon:'i-box', blurb:'Pan y repostería', accent:'acc-generic'},
+  {id:'lacteos', label:'Lácteos', icon:'i-box', blurb:'Leche y quesos', accent:'acc-generic'},
+  {id:'congelados', label:'Congelados', icon:'i-box', blurb:'Listos para cocinar', accent:'acc-generic'},
+  {id:'limpieza', label:'Limpieza', icon:'i-box', blurb:'Para el hogar', accent:'acc-generic'},
+  {id:'cuidado-personal', label:'Cuidado Personal', icon:'i-box', blurb:'Higiene y aseo', accent:'acc-generic'},
+  {id:'conservas', label:'Conservas', icon:'i-box', blurb:'Enlatados y encurtidos', accent:'acc-generic'},
+  {id:'cereales', label:'Cereales y Granos', icon:'i-box', blurb:'Arroz, frijoles y más', accent:'acc-generic'},
+  {id:'snacks', label:'Snacks', icon:'i-box', blurb:'Para picar', accent:'acc-generic'},
+  {id:'especias', label:'Especias', icon:'i-box', blurb:'Sazón para tus platos', accent:'acc-generic'},
+  {id:'mariscos', label:'Mariscos', icon:'i-box', blurb:'Del mar a tu mesa', accent:'acc-generic'}
 ];
 var CAT_MAP = {}; CATEGORIES.forEach(function(c){CAT_MAP[c.id]=c;});
 
@@ -867,13 +889,25 @@ function productCard(p){
   '</div>';
 }
 
+var CAT_PAGE_SIZE = 8;
+
 function catRailHtml(){
-  return CATEGORIES.map(function(c){
-    return '<a href="#/catalogo/'+c.id+'" class="cat-card '+c.accent+'">'+
+  return CATEGORIES.map(function(c,i){
+    var hidden = i >= CAT_PAGE_SIZE ? ' cat-card-hidden' : '';
+    return '<a href="#/catalogo/'+c.id+'" class="cat-card '+c.accent+hidden+'">'+
       '<div class="cat-icon-wrap"><svg class="icon"><use href="#'+c.icon+'"/></svg></div>'+
       '<h3>'+c.label+'</h3><span>'+c.blurb+'</span>'+
     '</a>';
   }).join('');
+}
+
+function catMoreHtml(){
+  var remaining = CATEGORIES.length - CAT_PAGE_SIZE;
+  if(remaining <= 0) return '';
+  var nextBatch = Math.min(CAT_PAGE_SIZE, remaining);
+  return '<div class="cat-more-wrap" id="catMoreWrap">'+
+    '<button type="button" class="btn btn-ghost cat-more-btn" id="catMoreBtn">Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+nextBatch+'</span></button>'+
+  '</div>';
 }
 
 /* ============================================================
@@ -885,7 +919,8 @@ function viewHome(){
 
   '<section class="section wrap" style="padding-top:32px;">'+
     '<div class="section-head cat-section-head"><div><h2>Compra por categoría</h2><p>Elige la categoría y arma tu caja ideal.</p></div></div>'+
-    '<div class="cat-rail">'+catRailHtml()+'</div>'+
+    '<div class="cat-rail" id="catRail">'+catRailHtml()+'</div>'+
+    catMoreHtml()+
   '</section>'+
 
   '<section class="section wrap">'+
@@ -1184,6 +1219,22 @@ function bindPageEvents(route){
       carouselNext.addEventListener('click', function(){
         var cardWidth = carousel.querySelector('.card') ? carousel.querySelector('.card').offsetWidth : 240;
         carousel.scrollBy({left: cardWidth * 2 + 40, behavior:'smooth'});
+      });
+    }
+
+    var catMoreBtn = document.getElementById('catMoreBtn');
+    if(catMoreBtn){
+      catMoreBtn.addEventListener('click', function(){
+        var hiddenCards = document.querySelectorAll('#catRail .cat-card-hidden');
+        Array.prototype.slice.call(hiddenCards, 0, CAT_PAGE_SIZE).forEach(function(el){
+          el.classList.remove('cat-card-hidden');
+        });
+        var remaining = document.querySelectorAll('#catRail .cat-card-hidden').length;
+        if(remaining > 0){
+          document.getElementById('catMoreBadge').textContent = Math.min(CAT_PAGE_SIZE, remaining);
+        }else{
+          document.getElementById('catMoreWrap').style.display = 'none';
+        }
       });
     }
   }
