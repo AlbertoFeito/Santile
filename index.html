@@ -141,6 +141,23 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .account-label{font-size:.85rem;font-weight:700;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;}
 .cart-count{position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--color-danger);color:#fff;font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;}
 .menu-toggle{display:flex;}
+.cat-menu{position:relative;display:none;}
+.cat-menu-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;border:1.5px solid transparent;background:transparent;color:var(--color-text);font-weight:700;font-size:.92rem;white-space:nowrap;transition:background-color .15s ease,border-color .15s ease;}
+.cat-menu-btn:hover{background:var(--color-surface-2);border-color:var(--color-border);}
+.cat-menu-chevron{width:13px;height:13px;transform:rotate(90deg);transition:transform .2s ease;}
+.cat-menu-btn[aria-expanded="true"] .cat-menu-chevron{transform:rotate(-90deg);}
+.cat-menu-scrim{position:fixed;inset:0;background:rgba(10,20,32,.35);opacity:0;visibility:hidden;transition:opacity .2s ease;z-index:55;}
+.cat-menu.open .cat-menu-scrim{opacity:1;visibility:visible;}
+.cat-menu-panel{position:absolute;top:calc(100% + 8px);left:0;width:290px;max-height:0;overflow:hidden;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);z-index:56;opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease,max-height .25s ease;}
+.cat-menu.open .cat-menu-panel{max-height:440px;opacity:1;transform:translateY(0);overflow-y:auto;}
+.cat-menu-panel h4{padding:14px 18px 10px;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);}
+.cat-menu-list{display:flex;flex-direction:column;}
+.cat-menu-item{padding:11px 18px;font-weight:600;font-size:.9rem;color:var(--color-text);border-top:1px solid var(--color-border);transition:background-color .15s ease,color .15s ease;}
+.cat-menu-item:hover{background:var(--color-surface-2);color:var(--color-brand-2);}
+@media (min-width:761px){
+  .menu-toggle{display:none;}
+  .cat-menu{display:block;}
+}
 .search-bar{flex:1;display:flex;align-items:center;gap:10px;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:999px;padding:0 16px;height:42px;min-width:0;}
 .search-bar .icon{width:18px;height:18px;color:var(--color-text-muted);flex-shrink:0;}
 .search-input{flex:1;min-width:0;border:none;background:transparent;outline:none;font:inherit;font-size:.9rem;color:var(--color-text);}
@@ -649,6 +666,17 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
         <img src="docs/assets/logo-iglesia-azul.png" alt="Santilé" class="logo-mark" style="object-fit:contain;">
         <span class="brand-text"><span class="name">Santilé</span><span class="tagline">Donde compra el espirituano</span></span>
       </a>
+      <div class="cat-menu">
+        <button type="button" class="cat-menu-btn" id="catMenuBtn" aria-haspopup="true" aria-expanded="false">
+          <span>Categorías</span>
+          <svg class="icon cat-menu-chevron"><use href="#i-chevron-r"/></svg>
+        </button>
+        <div class="cat-menu-scrim" id="catMenuScrim"></div>
+        <div class="cat-menu-panel" id="catMenuPanel">
+          <h4>Todas las categorías</h4>
+          <div class="cat-menu-list" id="catMenuList"></div>
+        </div>
+      </div>
       <div class="search-bar">
         <svg class="icon"><use href="#i-search"/></svg>
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos...">
@@ -961,6 +989,7 @@ function render(route){
   bindPageEvents(route);
   updateCartBadge();
   updateAccountLabel();
+  closeCatMenu();
 }
 
 /* ============================================================
@@ -1017,6 +1046,12 @@ function catMoreHtml(){
   return '<div class="cat-more-wrap" id="catMoreWrap">'+
     '<button type="button" class="btn btn-ghost cat-more-btn" id="catMoreBtn" data-expanded="false">Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+remaining+'</span></button>'+
   '</div>';
+}
+
+function catMenuListHtml(){
+  return CATEGORIES.map(function(c){
+    return '<a href="#/catalogo/'+c.id+'" class="cat-menu-item">'+c.label+'</a>';
+  }).join('');
 }
 
 /* ============================================================
@@ -1559,6 +1594,12 @@ function bindPageEvents(route){
 /* ============================================================
    GLOBAL EVENTS
 ============================================================ */
+function closeCatMenu(){
+  var wrap = document.getElementById('catMenuBtn');
+  if(!wrap) return;
+  wrap.setAttribute('aria-expanded','false');
+  wrap.closest('.cat-menu').classList.remove('open');
+}
 function initGlobalEvents(){
   document.getElementById('cartToggle').addEventListener('click', openDrawer);
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
@@ -1566,6 +1607,17 @@ function initGlobalEvents(){
   document.getElementById('menuToggle').addEventListener('click', function(){ document.getElementById('mobileNav').classList.add('open'); });
   document.querySelectorAll('[data-close-mobile]').forEach(function(el){
     el.addEventListener('click', function(){ document.getElementById('mobileNav').classList.remove('open'); });
+  });
+  document.getElementById('catMenuList').innerHTML = catMenuListHtml();
+  var catMenuBtn = document.getElementById('catMenuBtn');
+  catMenuBtn.addEventListener('click', function(){
+    var menu = catMenuBtn.closest('.cat-menu');
+    var isOpen = menu.classList.toggle('open');
+    catMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.getElementById('catMenuScrim').addEventListener('click', closeCatMenu);
+  document.getElementById('catMenuPanel').addEventListener('click', function(e){
+    if(e.target.closest('.cat-menu-item')) closeCatMenu();
   });
   window.addEventListener('hashchange', function(){ render(parseRoute()); });
 }
