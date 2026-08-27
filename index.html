@@ -178,6 +178,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 /* ============ TOP STRIP ============ */
 .top-strip{background:var(--color-brand);color:#fff;}
 .top-strip .wrap{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:8px 16px;}
+.top-strip-left{display:contents;}
 .top-strip .item{display:flex;align-items:center;gap:6px;flex:1;min-width:0;}
 .top-strip .item:nth-child(2){justify-content:center;}
 .top-strip .item:last-child{justify-content:flex-end;text-align:right;}
@@ -194,6 +195,11 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 }
 @media (max-width:340px){
   .top-strip .item-text .label{display:none;}
+}
+@media (min-width:901px){
+  .top-strip-left{display:flex;align-items:center;gap:32px;}
+  .top-strip-left .item{flex:none;}
+  .top-strip-left .item:nth-child(2){justify-content:flex-start;}
 }
 
 /* ============ HERO ============ */
@@ -228,6 +234,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .see-all{font-weight:700;font-size:.88rem;color:var(--color-brand-2);display:inline-flex;align-items:center;gap:4px;}
 :root[data-theme="dark"] .see-all, @media (prefers-color-scheme:dark){ }
 .see-all .icon{width:16px;height:16px;}
+.cat-section-head{justify-content:center;text-align:center;}
 
 /* ============ CATEGORY RAIL ============ */
 .cat-rail{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
@@ -256,7 +263,13 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
   .cat-card .cat-icon-wrap .icon{width:28px;height:28px;}
   .cat-card h3{font-size:.68rem;}
   .cat-card span{font-size:.6rem;}
-  .cat-section-head{justify-content:center;text-align:center;}
+}
+@media (min-width:901px){
+  .cat-rail{grid-template-columns:repeat(6,1fr);gap:20px;}
+  .cat-card .cat-icon-wrap{width:132px;height:132px;}
+  .cat-card .cat-icon-wrap .icon{width:56px;height:56px;}
+  .cat-card h3{font-size:.95rem;}
+  .cat-card span{font-size:.8rem;}
 }
 
 /* category accent colors */
@@ -571,14 +584,16 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 <div class="app-shell">
   <div class="top-strip">
     <div class="wrap">
-      <span class="item">
-        <svg class="icon"><use href="#i-map"/></svg>
-        <span class="item-text"><span class="value">Sancti Spíritus</span><span class="label">CP 60100</span></span>
-      </span>
-      <span class="item">
-        <svg class="icon"><use href="#i-shield"/></svg>
-        <span class="item-text"><span class="value">Calidad Premium</span><span class="label">Importado</span></span>
-      </span>
+      <div class="top-strip-left">
+        <span class="item">
+          <svg class="icon"><use href="#i-map"/></svg>
+          <span class="item-text"><span class="value">Sancti Spíritus</span><span class="label">CP 60100</span></span>
+        </span>
+        <span class="item">
+          <svg class="icon"><use href="#i-shield"/></svg>
+          <span class="item-text"><span class="value">Calidad Premium</span><span class="label">Importado</span></span>
+        </span>
+      </div>
       <span class="item">
         <svg class="icon"><use href="#i-whatsapp"/></svg>
         <span class="item-text"><span class="value">(786) 901-9115</span><span class="label">Escríbenos</span></span>
@@ -919,11 +934,14 @@ function productCard(p){
   '</div>';
 }
 
-var CAT_PAGE_SIZE = 8;
+function catPageSize(){
+  return window.innerWidth >= 901 ? 6 : 8;
+}
 
 function catRailHtml(){
+  var pageSize = catPageSize();
   return CATEGORIES.map(function(c,i){
-    var hidden = i >= CAT_PAGE_SIZE ? ' cat-card-hidden' : '';
+    var hidden = i >= pageSize ? ' cat-card-hidden' : '';
     return '<a href="#/catalogo/'+c.id+'" class="cat-card '+c.accent+hidden+'">'+
       '<div class="cat-icon-wrap"><svg class="icon"><use href="#'+c.icon+'"/></svg></div>'+
       '<h3>'+c.label+'</h3><span>'+c.blurb+'</span>'+
@@ -932,9 +950,10 @@ function catRailHtml(){
 }
 
 function catMoreHtml(){
-  var remaining = CATEGORIES.length - CAT_PAGE_SIZE;
+  var pageSize = catPageSize();
+  var remaining = CATEGORIES.length - pageSize;
   if(remaining <= 0) return '';
-  var nextBatch = Math.min(CAT_PAGE_SIZE, remaining);
+  var nextBatch = Math.min(pageSize, remaining);
   return '<div class="cat-more-wrap" id="catMoreWrap">'+
     '<button type="button" class="btn btn-ghost cat-more-btn" id="catMoreBtn">Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+nextBatch+'</span></button>'+
   '</div>';
@@ -1255,13 +1274,14 @@ function bindPageEvents(route){
     var catMoreBtn = document.getElementById('catMoreBtn');
     if(catMoreBtn){
       catMoreBtn.addEventListener('click', function(){
+        var pageSize = catPageSize();
         var hiddenCards = document.querySelectorAll('#catRail .cat-card-hidden');
-        Array.prototype.slice.call(hiddenCards, 0, CAT_PAGE_SIZE).forEach(function(el){
+        Array.prototype.slice.call(hiddenCards, 0, pageSize).forEach(function(el){
           el.classList.remove('cat-card-hidden');
         });
         var remaining = document.querySelectorAll('#catRail .cat-card-hidden').length;
         if(remaining > 0){
-          document.getElementById('catMoreBadge').textContent = Math.min(CAT_PAGE_SIZE, remaining);
+          document.getElementById('catMoreBadge').textContent = Math.min(pageSize, remaining);
         }else{
           document.getElementById('catMoreWrap').style.display = 'none';
         }
