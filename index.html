@@ -429,7 +429,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .pdp-sticky-actions{display:flex;align-items:center;gap:14px;flex-wrap:nowrap;flex-shrink:0;}
 .pdp-sticky-price{font-family:var(--font-display);font-weight:700;font-size:1.25rem;color:var(--color-brand);white-space:nowrap;}
 .pdp-sticky-info{display:flex;align-items:center;gap:12px;min-width:0;}
-.pdp-sticky-text{min-width:0;text-align:right;}
+.pdp-sticky-text{min-width:0;}
 .pdp-sticky-text h4{font-size:.86rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;margin:0;}
 .pdp-sticky-text span{display:block;font-size:.72rem;color:var(--color-text-muted);}
 .pdp-sticky-thumb{width:44px;height:44px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 22%, var(--color-surface-2)),var(--color-surface-2));}
@@ -1083,6 +1083,10 @@ function viewProduct(id){
   return ''+
   '<div class="pdp-sticky-bar" id="pdpStickyBar">'+
     '<div class="wrap pdp-sticky-inner">'+
+      '<div class="pdp-sticky-info">'+
+        '<div class="pdp-sticky-thumb"><svg class="icon"><use href="#'+cat.icon+'"/></svg></div>'+
+        '<div class="pdp-sticky-text"><h4>'+p.name+'</h4><span>'+cat.label+'</span></div>'+
+      '</div>'+
       '<div class="pdp-sticky-actions">'+
         '<span class="pdp-sticky-price price" id="pdpStickyPrice">'+money(p.boxPrice)+'</span>'+
         '<div class="stepper" id="pdpStickyStepper">'+
@@ -1091,10 +1095,6 @@ function viewProduct(id){
           '<button data-act="inc" aria-label="Sumar caja"><svg class="icon"><use href="#i-plus"/></svg></button>'+
         '</div>'+
         '<button class="btn btn-primary btn-sm" id="pdpStickyAddBtn"><svg class="icon"><use href="#i-cart"/></svg><span> Agregar al carrito</span></button>'+
-      '</div>'+
-      '<div class="pdp-sticky-info">'+
-        '<div class="pdp-sticky-text"><h4>'+p.name+'</h4><span>'+cat.label+'</span></div>'+
-        '<div class="pdp-sticky-thumb"><svg class="icon"><use href="#'+cat.icon+'"/></svg></div>'+
       '</div>'+
     '</div>'+
   '</div>'+
