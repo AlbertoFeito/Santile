@@ -1002,9 +1002,8 @@ function catMoreHtml(){
   var pageSize = catPageSize();
   var remaining = CATEGORIES.length - pageSize;
   if(remaining <= 0) return '';
-  var nextBatch = Math.min(pageSize, remaining);
   return '<div class="cat-more-wrap" id="catMoreWrap">'+
-    '<button type="button" class="btn btn-ghost cat-more-btn" id="catMoreBtn">Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+nextBatch+'</span></button>'+
+    '<button type="button" class="btn btn-ghost cat-more-btn" id="catMoreBtn" data-expanded="false">Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+remaining+'</span></button>'+
   '</div>';
 }
 
@@ -1359,16 +1358,20 @@ function bindPageEvents(route){
     var catMoreBtn = document.getElementById('catMoreBtn');
     if(catMoreBtn){
       catMoreBtn.addEventListener('click', function(){
+        var expanded = catMoreBtn.dataset.expanded === 'true';
         var pageSize = catPageSize();
-        var hiddenCards = document.querySelectorAll('#catRail .cat-card-hidden');
-        Array.prototype.slice.call(hiddenCards, 0, pageSize).forEach(function(el){
-          el.classList.remove('cat-card-hidden');
-        });
-        var remaining = document.querySelectorAll('#catRail .cat-card-hidden').length;
-        if(remaining > 0){
-          document.getElementById('catMoreBadge').textContent = Math.min(pageSize, remaining);
+        if(!expanded){
+          document.querySelectorAll('#catRail .cat-card-hidden').forEach(function(el){
+            el.classList.remove('cat-card-hidden');
+          });
+          catMoreBtn.dataset.expanded = 'true';
+          catMoreBtn.textContent = 'Mostrar menos';
         }else{
-          document.getElementById('catMoreWrap').style.display = 'none';
+          var cards = document.querySelectorAll('#catRail .cat-card');
+          cards.forEach(function(el,i){ if(i >= pageSize) el.classList.add('cat-card-hidden'); });
+          catMoreBtn.dataset.expanded = 'false';
+          var remaining = CATEGORIES.length - pageSize;
+          catMoreBtn.innerHTML = 'Mostrar más <span class="cat-more-badge" id="catMoreBadge">'+remaining+'</span>';
         }
       });
     }
