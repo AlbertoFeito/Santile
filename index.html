@@ -724,15 +724,11 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
     <div class="scrim" data-close-mobile></div>
     <div class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-        <span class="brand-text name font-display" style="font-size:1.2rem;font-weight:700;">Santilé</span>
+        <span class="font-display" style="font-size:1.2rem;font-weight:700;" id="mobileNavTitle">Menú</span>
         <button class="icon-btn" style="color:var(--color-text);" data-close-mobile><svg class="icon"><use href="#i-close"/></svg></button>
       </div>
       <a href="#/" data-close-mobile>Inicio</a>
-      <a href="#/catalogo/carnicos" data-close-mobile>Cárnicos</a>
-      <a href="#/catalogo/alimentos" data-close-mobile>Alimentos</a>
-      <a href="#/catalogo/aceite" data-close-mobile>Aceite y Condimentos</a>
-      <a href="#/catalogo/dulces" data-close-mobile>Dulces</a>
-      <a href="#/catalogo/galletas" data-close-mobile>Galletas</a>
+      <div id="mobileNavCats"></div>
       <a href="#/cuenta" data-close-mobile>Mi cuenta</a>
     </div>
   </div>
@@ -979,6 +975,11 @@ function updateAccountLabel(){
   if(!label) return;
   label.textContent = state.user ? state.user.name.split(' ')[0] : 'Mi cuenta';
 }
+function updateMobileNavTitle(route){
+  var title = document.getElementById('mobileNavTitle');
+  if(!title) return;
+  title.textContent = route.name==='catalog' ? 'Todas las categorías' : 'Menú';
+}
 
 /* ============================================================
    ROUTER
@@ -1019,6 +1020,7 @@ function render(route){
   updateCartBadge();
   updateAccountLabel();
   closeCatMenu();
+  updateMobileNavTitle(route);
 }
 
 /* ============================================================
@@ -1082,6 +1084,11 @@ function catMenuListHtml(){
     return '<a href="#/catalogo/'+c.id+'" class="cat-menu-item">'+c.label+'</a>';
   }).join('');
 }
+function mobileNavCatsHtml(){
+  return CATEGORIES.map(function(c){
+    return '<a href="#/catalogo/'+c.id+'" data-close-mobile>'+c.label+'</a>';
+  }).join('');
+}
 
 /* ============================================================
    VIEW: HOME
@@ -1133,7 +1140,6 @@ function viewCatalog(catId){
       }).join('')+
     '</aside>'+
     '<div>'+
-      '<div class="chip-row">'+CATEGORIES.map(function(c){return '<a href="#/catalogo/'+c.id+'" class="chip'+(c.id===catId?' active':'')+'">'+c.label+'</a>';}).join('')+'</div>'+
       '<div class="section-head"><div><h2>'+cat.label+'</h2><p>'+list.length+' productos disponibles en caja.</p></div></div>'+
       '<div class="grid">'+list.map(productCard).join('')+'</div>'+
     '</div>'+
@@ -1682,6 +1688,7 @@ function closeCatMenu(){
   wrap.closest('.cat-menu').classList.remove('open');
 }
 function initGlobalEvents(){
+  document.getElementById('mobileNavCats').innerHTML = mobileNavCatsHtml();
   document.getElementById('cartToggle').addEventListener('click', openDrawer);
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   document.getElementById('drawerScrim').addEventListener('click', closeDrawer);
