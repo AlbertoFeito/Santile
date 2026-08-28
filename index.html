@@ -369,6 +369,7 @@ h1,h2,h3,.font-display{font-family:var(--font-display);text-wrap:balance;font-we
 .card-media-wrap{position:relative;}
 .card-media{position:relative;aspect-ratio:1/.82;background:linear-gradient(155deg,color-mix(in srgb, var(--cat-c) 20%, var(--color-surface-2)),var(--color-surface-2));display:flex;align-items:center;justify-content:center;}
 .card-media .icon{width:46%;height:46%;color:var(--cat-c);opacity:.92;}
+.card-media img{width:100%;height:100%;object-fit:cover;display:block;}
 .card-tag{position:absolute;left:10px;bottom:10px;background:var(--color-success);color:var(--color-success-ink);font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.02em;}
 .fav-btn{position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.94);color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);transition:transform .15s cubic-bezier(.34,1.56,.64,1),color .15s ease;}
 .fav-btn:hover{transform:scale(1.1);}
@@ -906,12 +907,12 @@ var CATEGORIES = [
 var CAT_MAP = {}; CATEGORIES.forEach(function(c){CAT_MAP[c.id]=c;});
 
 var PRODUCTS = [
-  {id:'crn-01',cat:'carnicos',images:['docs/assets/anuncio-lomo-de-cerdo.jpg'],name:'Lomo de Cerdo Importado',badge:'premium',boxQty:'Caja · 10 libras (4.54 kg)',boxDesc:'Pieza entera al vacío, ideal para asar o freír.',boxPrice:35,unitPrice:3.5,unitLabel:'por libra',desc:'Lomo de cerdo importado de calidad premium, empacado al vacío para máxima frescura. Perfecto para tus recetas favoritas de fin de semana.'},
-  {id:'crn-02',cat:'carnicos',images:['docs/assets/anuncio-muslo-de-pollo.jpg'],name:'Muslo de Pollo Golden Phoenix',badge:'vendido',boxQty:'Caja x6 paquetes · 2 kg c/u (12 kg)',boxDesc:'6 paquetes de 2kg, sin antibióticos.',boxPrice:36,unitPrice:6,unitLabel:'por paquete',desc:'Muslos de pollo Golden Phoenix, producto sin antibiótico y de calidad premium. Presentación en caja de 6 paquetes de 2kg cada uno.'},
+  {id:'crn-01',cat:'carnicos',images:['docs/assets/anuncio-lomo-de-cerdo.jpg','docs/assets/ejemplo-foto-2.svg','docs/assets/ejemplo-foto-3.svg'],name:'Lomo de Cerdo Importado',badge:'premium',boxQty:'Caja · 10 libras (4.54 kg)',boxDesc:'Pieza entera al vacío, ideal para asar o freír.',boxPrice:35,unitPrice:3.5,unitLabel:'por libra',desc:'Lomo de cerdo importado de calidad premium, empacado al vacío para máxima frescura. Perfecto para tus recetas favoritas de fin de semana.'},
+  {id:'crn-02',cat:'carnicos',images:['docs/assets/anuncio-muslo-de-pollo.jpg','docs/assets/ejemplo-foto-2.svg','docs/assets/ejemplo-foto-3.svg'],name:'Muslo de Pollo Golden Phoenix',badge:'vendido',boxQty:'Caja x6 paquetes · 2 kg c/u (12 kg)',boxDesc:'6 paquetes de 2kg, sin antibióticos.',boxPrice:36,unitPrice:6,unitLabel:'por paquete',desc:'Muslos de pollo Golden Phoenix, producto sin antibiótico y de calidad premium. Presentación en caja de 6 paquetes de 2kg cada uno.'},
   {id:'crn-03',cat:'carnicos',name:'Picadillo de Res Surtido',badge:'',boxQty:'Caja x10 paquetes · 1 libra c/u',boxDesc:'10 paquetes individuales de 1 libra.',boxPrice:58,unitPrice:5.8,unitLabel:'por paquete',desc:'Picadillo de res ideal para picadillo a la habanera, rellenos y guisos rápidos. Paquetes individuales fáciles de congelar.'},
   {id:'crn-04',cat:'carnicos',name:'Pechuga de Pollo Deshuesada',badge:'oferta',boxQty:'Caja x8 paquetes · 2 libras c/u',boxDesc:'8 paquetes de 2 libras, sin hueso.',boxPrice:64,unitPrice:8,unitLabel:'por paquete',desc:'Pechuga de pollo deshuesada y sin piel, alto rendimiento en carne. Excelente para milanesas, pechugas rellenas o a la plancha.'},
 
-  {id:'ali-01',cat:'alimentos',images:['docs/assets/anuncio-frijol-negro.jpg'],name:'Frijol Negro Rayan',badge:'vendido',boxQty:'Caja x30 unidades · 1 kg c/u',boxDesc:'30 unidades de 1kg cada una.',boxPrice:51,unitPrice:1.7,unitLabel:'c/u',desc:'Frijol negro Rayan, grupo I, clase negra. El infaltable en la mesa cubana, ideal para congrí y potajes.'},
+  {id:'ali-01',cat:'alimentos',images:['docs/assets/anuncio-frijol-negro.jpg','docs/assets/ejemplo-foto-2.svg','docs/assets/ejemplo-foto-3.svg'],name:'Frijol Negro Rayan',badge:'vendido',boxQty:'Caja x30 unidades · 1 kg c/u',boxDesc:'30 unidades de 1kg cada una.',boxPrice:51,unitPrice:1.7,unitLabel:'c/u',desc:'Frijol negro Rayan, grupo I, clase negra. El infaltable en la mesa cubana, ideal para congrí y potajes.'},
   {id:'ali-02',cat:'alimentos',name:'Arroz Blanco Selecto',badge:'premium',boxQty:'Caja x25 sacos · 5 libras c/u',boxDesc:'25 sacos de 5 libras cada uno.',boxPrice:70,unitPrice:2.8,unitLabel:'por saco',desc:'Arroz blanco de grano largo, cocción uniforme y grano suelto. La base perfecta para cualquier comida.'},
   {id:'ali-03',cat:'alimentos',name:'Frijol Colorado Rayan',badge:'',boxQty:'Caja x30 unidades · 1 kg c/u',boxDesc:'30 unidades de 1kg cada una.',boxPrice:54,unitPrice:1.8,unitLabel:'c/u',desc:'Frijol colorado de grupo I, textura cremosa ideal para potajes espesos y sabrosos.'},
   {id:'ali-04',cat:'alimentos',name:'Puré de Tomate Enlatado',badge:'oferta',boxQty:'Caja x24 latas · 400 g c/u',boxDesc:'24 latas listas para guisar.',boxPrice:30,unitPrice:1.25,unitLabel:'por lata',desc:'Puré de tomate concentrado, base perfecta para sofritos, salsas y guisos con ese sabor casero.'},
@@ -1197,12 +1198,18 @@ function productCard(p){
   else if(p.badge==='oferta') badgeHtml = '<span class="card-badge oferta"><svg class="icon"><use href="#i-star"/></svg>Oferta</span>';
   else if(p.badge==='vendido') badgeHtml = '<span class="card-badge"><svg class="icon"><use href="#i-star"/></svg>Más vendido</span>';
   var isFav = !!state.favorites[p.id];
+  /* En las tarjetas va la foto principal y nada mas: el carrusel es cosa de
+     la ficha. Sin foto se mantiene el icono de la categoria. */
+  var portada = productImages(p)[0];
+  var mediaHtml = portada
+    ? '<img src="'+portada+'" alt="'+escapeHtml(p.name)+'" loading="lazy">'
+    : '<svg class="icon"><use href="#'+cat.icon+'"/></svg>';
   return '<div class="card '+cat.accent+'">'+
     '<div class="card-media-wrap">'+
       '<a href="#/producto/'+p.id+'" class="card-media" aria-label="'+p.name+'">'+
         badgeHtml+
         '<span class="card-box-note">'+p.boxQty.split('·')[0].trim()+'</span>'+
-        '<svg class="icon"><use href="#'+cat.icon+'"/></svg>'+
+        mediaHtml+
         '<span class="card-tag">'+cat.label+'</span>'+
       '</a>'+
       '<button type="button" class="fav-btn'+(isFav?' active':'')+'" data-fav="'+p.id+'" aria-label="'+(isFav?'Quitar de favoritos':'Agregar a favoritos')+'" aria-pressed="'+isFav+'"><svg class="icon"><use href="#i-heart"/></svg></button>'+
